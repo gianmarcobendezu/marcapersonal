@@ -1400,6 +1400,128 @@
 }
 
 /* Responsive FAQ */
+
+/* nuevos fin*/
+
+/* ── CALENDLY SECTION ── */
+#agenda {
+    background: var(--bg2);
+}
+
+.calendly-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(3,3,16,0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(165,180,252,0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+.calendly-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon), var(--accent), var(--neon), transparent);
+}
+
+.calendly-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    background: rgba(0,0,0,0.4);
+    border-bottom: 1px solid rgba(165,180,252,0.1);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.calendly-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--neon);
+    letter-spacing: 0.18em;
+    font-weight: 600;
+}
+.calendly-status .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+    animation: pulse-status 2s ease-in-out infinite;
+}
+.calendly-info {
+    display: flex;
+    gap: 1.2rem;
+}
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text);
+}
+.info-icon {
+    font-size: 0.9rem;
+}
+
+/* Calendly widget customization */
+.calendly-inline-widget {
+    background: rgba(0,0,0,0.3);
+}
+
+/* Benefits */
+.agenda-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+}
+.agenda-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.2rem;
+    background: rgba(165,180,252,0.03);
+    border: 1px solid rgba(165,180,252,0.1);
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+.agenda-item:hover {
+    border-color: rgba(74,222,128,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(74,222,128,0.1);
+}
+.agenda-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+.agenda-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.agenda-desc {
+    font-size: 0.72rem;
+    color: var(--text);
+}
+
+/* Responsive */
+@media(max-width: 768px){
+    .agenda-benefits { grid-template-columns: 1fr; }
+    .calendly-header { padding: 1rem 1.2rem; }
+    .calendly-info { flex-direction: column; gap: 0.5rem; }
+    .calendly-inline-widget { height: 600px !important; }
+}
+
+
 @media(max-width: 768px){
     #faq {
         background-attachment: scroll; /* Mejor performance en móvil */
@@ -2863,6 +2985,68 @@
     </div>
 </section>
 
+<!-- CALENDLY — AGENDA REUNIÓN -->
+<section id="agenda" class="section-base">
+    <div class="reveal">
+        <div class="section-label">// agenda directa</div>
+        <h2 class="section-title">Reserva tu <em>reunión</em></h2>
+        <p class="section-sub" style="margin:0 auto;">Elige el horario que mejor te funcione. 15 minutos para conocer tu proyecto.</p>
+    </div>
+
+    <div class="calendly-container reveal">
+        <div class="calendly-header">
+            <div class="calendly-status">
+                <div class="status-indicator active"></div>
+                <span>CALENDARIO ACTIVO</span>
+            </div>
+            <div class="calendly-info">
+                <div class="info-item">
+                    <span class="info-icon">⏱</span>
+                    <span>15 min</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">💻</span>
+                    <span>Zoom/WhatsApp</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">🎁</span>
+                    <span>Gratis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendly inline widget -->
+        <div class="calendly-inline-widget" 
+             data-url="https://calendly.com/gianmarco-bendezu/30min" 
+             style="min-width:320px;height:700px;">
+        </div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    </div>
+
+    <div class="agenda-benefits reveal">
+        <div class="agenda-item">
+            <div class="agenda-icon">📋</div>
+            <div class="agenda-text">
+                <div class="agenda-title">Preparación previa</div>
+                <div class="agenda-desc">Reviso tu web y redes antes de la reunión</div>
+            </div>
+        </div>
+        <div class="agenda-item">
+            <div class="agenda-icon">💡</div>
+            <div class="agenda-text">
+                <div class="agenda-title">Ideas concretas</div>
+                <div class="agenda-desc">Te doy 2-3 ideas aplicables de inmediato</div>
+            </div>
+        </div>
+        <div class="agenda-item">
+            <div class="agenda-icon">📄</div>
+            <div class="agenda-text">
+                <div class="agenda-title">Propuesta posterior</div>
+                <div class="agenda-desc">Si hay fit, te envío propuesta formal en 24h</div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- CONTACTO -->
 <section id="contacto" class="section-base">
