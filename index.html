@@ -246,7 +246,38 @@
         .content-arrow span { transition: transform 0.2s; display: inline-block; }
         .content-card:hover .content-arrow span { transform: translateX(4px); }
 
-        /* CONTACTO */
+        /* CLIENTES */
+        #clientes { background: var(--bg2); text-align: center; }
+        .clients-label { font-size: 0.72rem; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2.5rem; }
+        .clients-row {
+            display: flex; justify-content: center; align-items: center;
+            flex-wrap: wrap; gap: 1.5rem; max-width: 900px; margin: 0 auto;
+        }
+        .client-chip {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 10px 22px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 50px;
+            font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.5);
+            transition: all 0.3s;
+        }
+        .client-chip:hover { border-color: rgba(37,99,235,0.4); color: #fff; background: rgba(37,99,235,0.06); }
+        .client-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+
+        /* VIDEO */
+        #video { background: var(--bg3); text-align: center; }
+        .video-wrap {
+            max-width: 820px; margin: 0 auto;
+            border-radius: 12px; overflow: hidden;
+            border: 1px solid rgba(165,180,252,0.1);
+            position: relative;
+            box-shadow: 0 0 60px rgba(37,99,235,0.15);
+        }
+        .video-wrap iframe {
+            display: block; width: 100%;
+            aspect-ratio: 16/9; border: none;
+        }
         #contacto {
             position: relative;
             text-align: center;
@@ -481,18 +512,52 @@
             <div><span class="t-b">técnico</span> <span class="t-m">=</span> <span class="t-w">"Computación e Informática"</span></div>
             <div><span class="t-b">ubicación</span> <span class="t-m">=</span> <span class="t-w">"Ica, Perú 🇵🇪"</span></div>
             <div style="margin-top:0.7rem"><span class="t-b">foco</span> <span class="t-m">=</span> <span class="t-w">"IA & Automatización"</span></div>
+            <div><span class="t-b">hobby</span> <span class="t-m">=</span> <span class="t-w">"🌵 Suculentas"</span></div>
             <div style="margin-top:0.7rem"><span class="t-b">estado</span> <span class="t-m">=</span> <span class="t-g">"disponible"</span> <span class="t-cur t-b">█</span></div>
         </div>
         <div class="about-text reveal">
             <div class="section-label">// 06 — quién soy</div>
             <h2 class="section-title" style="font-size:2.1rem;">El ingeniero que<br>habla tu <em>idioma</em></h2>
             <p class="section-sub">Soy <strong style="color:#e2e8f0">Gianmarco Bendezu</strong>, fundador de Sistek Peru. Ingeniero de Sistemas especializado en automatización e IA. Ayudo a empresas a hacer más con menos — sin que tengan que entender una línea de código.</p>
+            <p class="section-sub" style="margin-top:-1.8rem;">Fuera del teclado, cultivo suculentas — las tengo en casa y en la oficina. Me enseñaron que con paciencia y el ambiente correcto, cualquier cosa crece. Lo mismo aplica a los negocios.</p>
             <div class="credentials">
                 <div class="credential-item"><div class="credential-icon">🎓</div><div><div class="credential-title">Ingeniero de Sistemas e Informática</div><div class="credential-sub">Diseño y desarrollo de sistemas</div></div></div>
                 <div class="credential-item"><div class="credential-icon">💻</div><div><div class="credential-title">Técnico en Computación e Informática</div><div class="credential-sub">Base técnica sólida en redes y software</div></div></div>
                 <div class="credential-item"><div class="credential-icon">🏢</div><div><div class="credential-title">Fundador de Sistek Peru</div><div class="credential-sub">Empresa de tecnología e innovación en Ica, Perú</div></div></div>
+                <div class="credential-item"><div class="credential-icon">🌵</div><div><div class="credential-title">Cultivador de suculentas</div><div class="credential-sub">Paciencia, cuidado y atención al detalle — en plantas y en código</div></div></div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- CLIENTES -->
+<section id="clientes" class="section-base">
+    <div class="reveal">
+        <div class="section-label">// empresas que confían</div>
+        <p class="clients-label">Clientes reales · Proyectos entregados en Ica y Latinoamérica</p>
+    </div>
+    <div class="clients-row reveal">
+        <div class="client-chip"><div class="client-chip-dot"></div>Buganvilla Tours</div>
+        <div class="client-chip"><div class="client-chip-dot"></div>Destinos Ica</div>
+        <div class="client-chip"><div class="client-chip-dot"></div>Suisper</div>
+        <div class="client-chip"><div class="client-chip-dot"></div>GoAdventure</div>
+    </div>
+</section>
+
+<!-- VIDEO -->
+<section id="video" class="section-base">
+    <div class="reveal">
+        <div class="section-label">// mira cómo trabajo</div>
+        <h2 class="section-title">Aprende directo<br>de <em>Sistek Peru</em></h2>
+        <p class="section-sub">Un vistazo a lo que construyo. Míralo aquí mismo.</p>
+    </div>
+    <div class="video-wrap reveal">
+        <iframe
+            src="https://www.youtube.com/embed/ZcDERB_dMuk?rel=0&modestbranding=1&color=white"
+            title="Sistek Peru — Automatización e IA"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
     </div>
 </section>
 
