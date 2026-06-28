@@ -273,7 +273,27 @@
             border: 1px solid rgba(165,180,252,0.1);
             position: relative;
             box-shadow: 0 0 60px rgba(37,99,235,0.15);
+            cursor: pointer;
         }
+        .video-thumb {
+            position: relative; width: 100%; aspect-ratio: 16/9;
+            background: #000;
+        }
+        .video-thumb img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block; transition: transform 0.4s ease, opacity 0.3s;
+        }
+        .video-wrap:hover .video-thumb img { transform: scale(1.02); opacity: 0.85; }
+        .video-play-btn {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .video-play-btn svg {
+            width: 72px; height: 72px;
+            filter: drop-shadow(0 4px 24px rgba(0,0,0,0.6));
+            transition: transform 0.25s;
+        }
+        .video-wrap:hover .video-play-btn svg { transform: scale(1.12); }
         .video-wrap iframe {
             display: block; width: 100%;
             aspect-ratio: 16/9; border: none;
@@ -551,13 +571,18 @@
         <h2 class="section-title">Aprende directo<br>de <em>Sistek Peru</em></h2>
         <p class="section-sub">Un vistazo a lo que construyo. Míralo aquí mismo.</p>
     </div>
-    <div class="video-wrap reveal">
-        <iframe
-            src="https://www.youtube.com/embed/ZcDERB_dMuk?rel=0&modestbranding=1&color=white"
-            title="Sistek Peru — Automatización e IA"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-        </iframe>
+    <div class="video-wrap reveal" id="videoWrap">
+        <div class="video-thumb" id="videoThumb">
+            <img src="https://i.ytimg.com/vi/ZcDERB_dMuk/maxresdefault.jpg"
+                 alt="Genera Imágenes con IA en N8N y Envíalas a Telegram — Sistek Peru"
+                 loading="lazy">
+            <div class="video-play-btn">
+                <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/>
+                    <path d="M45 24 27 14v20" fill="white"/>
+                </svg>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -668,7 +693,13 @@ const obs=new IntersectionObserver(entries=>entries.forEach((e,i)=>{
 }),{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
-// ── WALLPAPER ALEATORIO CONTACTO ──
+// ── VIDEO CLICK TO PLAY ──
+document.getElementById('videoWrap').addEventListener('click', function(){
+    const wrap = this;
+    wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/ZcDERB_dMuk?autoplay=1&rel=0&modestbranding=1" title="Sistek Peru" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block;width:100%;aspect-ratio:16/9;border:none;"></iframe>';
+});
+
+
 (function(){
     const scenes = [
         {
