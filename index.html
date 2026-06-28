@@ -611,6 +611,8 @@
     -webkit-text-fill-color: transparent;
 }
 
+
+
 /* Responsive */
 @media(max-width: 900px){
     .phase-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
@@ -622,6 +624,324 @@
     .launch-node { width: 38px; height: 38px; font-size: 0.6rem; }
     .launch-cta-inner { flex-direction: column; text-align: center; }
 }
+
+        /* nuevos fin */
+
+
+        /* ── ACTIVE SYSTEMS DASHBOARD ── */
+.systems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.system-card {
+    position: relative;
+    background: rgba(3,3,16,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(165,180,252,0.1);
+    border-radius: 14px;
+    padding: 1.8rem;
+    transition: all 0.4s;
+    overflow: hidden;
+}
+.system-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--neon), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.system-card:hover {
+    border-color: rgba(74,222,128,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 40px rgba(74,222,128,0.1);
+}
+.system-card:hover::before { opacity: 1; }
+
+/* Header */
+.system-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--muted);
+    position: relative;
+}
+.status-indicator.active {
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+    animation: pulse-status 2s ease-in-out infinite;
+}
+.status-indicator.active::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--neon);
+    animation: ripple-status 2s ease-out infinite;
+}
+@keyframes pulse-status {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+@keyframes ripple-status {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+.status-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--neon);
+    letter-spacing: 0.15em;
+    font-weight: 600;
+}
+.system-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    padding: 3px 10px;
+    background: rgba(165,180,252,0.08);
+    border: 1px solid rgba(165,180,252,0.15);
+    border-radius: 4px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+}
+
+/* Visual Diagram */
+.system-visual {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    border: 1px solid rgba(165,180,252,0.08);
+}
+.system-diagram {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 200px;
+    margin: 0 auto;
+}
+.system-node {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+}
+.system-node.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+.system-node.node-1 { top: 10%; left: 10%; }
+.system-node.node-2 { top: 10%; right: 10%; }
+.system-node.node-3 { bottom: 10%; left: 50%; transform: translateX(-50%); }
+
+.node-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(165,180,252,0.08);
+    border: 1px solid rgba(165,180,252,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+}
+.system-card:hover .node-icon,
+.system-node.center .node-icon {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 16px rgba(165,180,252,0.4);
+}
+.node-label {
+    font-size: 0.65rem;
+    color: var(--text);
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Flow Lines */
+.flow-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+.flow-path {
+    fill: none;
+    stroke: rgba(165,180,252,0.15);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    transition: stroke 0.3s;
+}
+.system-card:hover .flow-path {
+    stroke: rgba(74,222,128,0.4);
+    animation: dash-flow 1s linear infinite;
+}
+@keyframes dash-flow {
+    to { stroke-dashoffset: -8; }
+}
+
+/* Flow Particles */
+.flow-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+    opacity: 0;
+}
+.system-card:hover .particle {
+    animation: particle-flow 2s ease-in-out infinite;
+    animation-delay: var(--delay);
+}
+.particle:nth-child(1) {
+    top: 50%;
+    left: 50%;
+    animation-name: particle-flow-1;
+}
+.particle:nth-child(2) {
+    top: 50%;
+    left: 50%;
+    animation-name: particle-flow-2;
+}
+.particle:nth-child(3) {
+    top: 50%;
+    left: 50%;
+    animation-name: particle-flow-3;
+}
+@keyframes particle-flow-1 {
+    0% { transform: translate(-50%, -50%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(-120px, -120px); opacity: 0; }
+}
+@keyframes particle-flow-2 {
+    0% { transform: translate(-50%, -50%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(80px, -120px); opacity: 0; }
+}
+@keyframes particle-flow-3 {
+    0% { transform: translate(-50%, -50%); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(-50%, 80px); opacity: 0; }
+}
+
+/* Content */
+.system-content {
+    margin-bottom: 1.5rem;
+}
+.system-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+.system-result {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.8rem;
+    padding: 6px 12px;
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 6px;
+    width: fit-content;
+}
+.result-icon {
+    color: var(--neon);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+.result-text {
+    font-size: 0.75rem;
+    color: var(--neon);
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.02em;
+}
+.system-desc {
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+}
+.system-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+/* Metrics */
+.system-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(165,180,252,0.08);
+}
+.metric {
+    text-align: center;
+}
+.metric-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    display: inline-block;
+}
+.metric-unit {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-left: 2px;
+}
+.metric-label {
+    font-size: 0.65rem;
+    color: var(--text);
+    margin-top: 4px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media(max-width: 768px){
+    .systems-grid { grid-template-columns: 1fr; }
+    .system-diagram { max-width: 160px; }
+    .node-icon { width: 36px; height: 36px; font-size: 1rem; }
+}
+
+
 
         /* nuevos fin */
         @media(max-width:768px){
@@ -887,20 +1207,431 @@
 <div class="led-strip"></div>
 
 <!-- PORTFOLIO -->
+<!-- PORTFOLIO — ACTIVE SYSTEMS -->
 <section id="portfolio" class="section-base">
     <div class="reveal" style="text-align:center;margin-bottom:3rem;">
-        <div class="section-label">// 04 — proyectos reales</div>
-        <h2 class="section-title">Integraciones que<br>ya están <em>funcionando</em></h2>
+        <div class="section-label">// 04 — sistemas activos</div>
+        <h2 class="section-title">Integraciones en<br><em>producción</em></h2>
+        <p class="section-sub" style="margin:0 auto;">Sistemas reales funcionando ahora. Datos fluyendo sin intervención humana.</p>
     </div>
-    <div class="projects-grid">
-        <div class="project-card reveal" style="position:relative"><div class="led-dot" style="animation-duration:2.2s"></div><span class="project-badge">Turismo · Bokun</span><div class="project-name">Integración con Bokun</div><div class="project-result">↓ Gestión de tours 100% automatizada</div><div class="project-desc">Conecté Bokun con canales de venta externos para sincronizar disponibilidad, reservas y pagos en tiempo real sin intervención manual.</div><div class="project-stack"><span class="tag">Bokun</span><span class="tag">API</span><span class="tag">Automatización</span></div></div>
-        <div class="project-card reveal reveal-delay" style="position:relative"><div class="led-dot green" style="animation-duration:1.6s"></div><span class="project-badge">ERP · Odoo</span><div class="project-name">Integraciones con Odoo</div><div class="project-result">↓ Datos unificados entre áreas</div><div class="project-desc">Integré Odoo con sistemas externos de ventas, inventario y facturación. Los datos fluyen solos entre departamentos sin reingreso manual.</div><div class="project-stack"><span class="tag">Odoo</span><span class="tag">REST API</span><span class="tag">ERP</span></div></div>
-        <div class="project-card reveal reveal-delay2" style="position:relative"><div class="led-dot violet" style="animation-duration:2.9s"></div><span class="project-badge">CRM · HubSpot</span><div class="project-name">Integración con HubSpot</div><div class="project-result">↓ Pipeline de ventas automatizado</div><div class="project-desc">Automaticé la captura de leads, seguimiento y notificaciones en HubSpot conectado a formularios web y WhatsApp.</div><div class="project-stack"><span class="tag">HubSpot</span><span class="tag">Leads</span><span class="tag">Webhook</span></div></div>
-        <div class="project-card reveal" style="position:relative"><div class="led-dot" style="animation-duration:1.4s"></div><span class="project-badge">Productividad · Notion</span><div class="project-name">Integración con Notion</div><div class="project-result">↓ Base de conocimiento viva y automática</div><div class="project-desc">Sincronicé Notion como hub central de operaciones. Tareas, proyectos y documentos se actualizan solos desde otras plataformas.</div><div class="project-stack"><span class="tag">Notion</span><span class="tag">API</span><span class="tag">Flujos</span></div></div>
-        <div class="project-card reveal reveal-delay" style="position:relative"><div class="led-dot green" style="animation-duration:2.5s"></div><span class="project-badge">Tributario · SUNAT</span><div class="project-name">Integración con SIRE SUNAT</div><div class="project-result">↓ Declaración tributaria sin digitación</div><div class="project-desc">Automaticé extracción y envío de comprobantes electrónicos al SIRE de SUNAT. Cero errores manuales, cumplimiento garantizado.</div><div class="project-stack"><span class="tag">SIRE</span><span class="tag">SUNAT</span><span class="tag">Facturación electrónica</span></div></div>
-        <div class="project-card reveal reveal-delay2" style="position:relative"><div class="led-dot violet" style="animation-duration:1.9s"></div><span class="project-badge">Turismo · Reservas</span><div class="project-name">Sistema de reservas integral</div><div class="project-result">↓ 80% menos tiempo en gestión</div><div class="project-desc">Bot que recibe solicitudes, verifica disponibilidad, envía cotizaciones y confirma pagos automáticamente para agencias de turismo.</div><div class="project-stack"><span class="tag">Bot WhatsApp</span><span class="tag">Pagos</span><span class="tag">Automatización</span></div></div>
+
+    <div class="systems-grid">
+        <!-- PROYECTO 1: BOKUN -->
+        <div class="system-card reveal" data-system="bokun">
+            <div class="system-header">
+                <div class="system-status">
+                    <div class="status-indicator active"></div>
+                    <span class="status-label">EN PRODUCCIÓN</span>
+                </div>
+                <div class="system-badge">Turismo · Bokun</div>
+            </div>
+
+            <div class="system-visual">
+                <div class="system-diagram">
+                    <div class="system-node center">
+                        <div class="node-icon">🎯</div>
+                        <div class="node-label">Bokun</div>
+                    </div>
+                    <div class="system-node node-1">
+                        <div class="node-icon">🌐</div>
+                        <div class="node-label">Canales Web</div>
+                    </div>
+                    <div class="system-node node-2">
+                        <div class="node-icon">💳</div>
+                        <div class="node-label">Pagos</div>
+                    </div>
+                    <div class="system-node node-3">
+                        <div class="node-icon">📅</div>
+                        <div class="node-label">Reservas</div>
+                    </div>
+                    <svg class="flow-lines" viewBox="0 0 200 200">
+                        <path class="flow-path" d="M 100 100 L 40 40" />
+                        <path class="flow-path" d="M 100 100 L 160 40" />
+                        <path class="flow-path" d="M 100 100 L 100 170" />
+                    </svg>
+                    <div class="flow-particles">
+                        <div class="particle" style="--delay: 0s;"></div>
+                        <div class="particle" style="--delay: 0.5s;"></div>
+                        <div class="particle" style="--delay: 1s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-content">
+                <div class="system-name">Integración con Bokun</div>
+                <div class="system-result">
+                    <span class="result-icon">↓</span>
+                    <span class="result-text">Gestión de tours 100% automatizada</span>
+                </div>
+                <div class="system-desc">Conecté Bokun con canales de venta externos para sincronizar disponibilidad, reservas y pagos en tiempo real sin intervención manual.</div>
+                <div class="system-stack">
+                    <span class="tag">Bokun</span>
+                    <span class="tag">API</span>
+                    <span class="tag">Automatización</span>
+                </div>
+            </div>
+
+            <div class="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" data-target="100">0</div>
+                    <div class="metric-unit">%</div>
+                    <div class="metric-label">Automatizado</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-target="0">0</div>
+                    <div class="metric-unit">h</div>
+                    <div class="metric-label">Trabajo manual</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 2: ODOO -->
+        <div class="system-card reveal reveal-delay" data-system="odoo">
+            <div class="system-header">
+                <div class="system-status">
+                    <div class="status-indicator active"></div>
+                    <span class="status-label">EN PRODUCCIÓN</span>
+                </div>
+                <div class="system-badge">ERP · Odoo</div>
+            </div>
+
+            <div class="system-visual">
+                <div class="system-diagram">
+                    <div class="system-node center">
+                        <div class="node-icon">⚙️</div>
+                        <div class="node-label">Odoo</div>
+                    </div>
+                    <div class="system-node node-1">
+                        <div class="node-icon">📊</div>
+                        <div class="node-label">Ventas</div>
+                    </div>
+                    <div class="system-node node-2">
+                        <div class="node-icon">📦</div>
+                        <div class="node-label">Inventario</div>
+                    </div>
+                    <div class="system-node node-3">
+                        <div class="node-icon">🧾</div>
+                        <div class="node-label">Facturación</div>
+                    </div>
+                    <svg class="flow-lines" viewBox="0 0 200 200">
+                        <path class="flow-path" d="M 100 100 L 40 40" />
+                        <path class="flow-path" d="M 100 100 L 160 40" />
+                        <path class="flow-path" d="M 100 100 L 100 170" />
+                    </svg>
+                    <div class="flow-particles">
+                        <div class="particle" style="--delay: 0.2s;"></div>
+                        <div class="particle" style="--delay: 0.7s;"></div>
+                        <div class="particle" style="--delay: 1.2s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-content">
+                <div class="system-name">Integraciones con Odoo</div>
+                <div class="system-result">
+                    <span class="result-icon">↓</span>
+                    <span class="result-text">Datos unificados entre áreas</span>
+                </div>
+                <div class="system-desc">Integré Odoo con sistemas externos de ventas, inventario y facturación. Los datos fluyen solos entre departamentos sin reingreso manual.</div>
+                <div class="system-stack">
+                    <span class="tag">Odoo</span>
+                    <span class="tag">REST API</span>
+                    <span class="tag">ERP</span>
+                </div>
+            </div>
+
+            <div class="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" data-target="3">0</div>
+                    <div class="metric-unit">áreas</div>
+                    <div class="metric-label">Conectadas</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-target="24">0</div>
+                    <div class="metric-unit">/7</div>
+                    <div class="metric-label">Sincronizado</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 3: HUBSPOT -->
+        <div class="system-card reveal reveal-delay2" data-system="hubspot">
+            <div class="system-header">
+                <div class="system-status">
+                    <div class="status-indicator active"></div>
+                    <span class="status-label">EN PRODUCCIÓN</span>
+                </div>
+                <div class="system-badge">CRM · HubSpot</div>
+            </div>
+
+            <div class="system-visual">
+                <div class="system-diagram">
+                    <div class="system-node center">
+                        <div class="node-icon">🎯</div>
+                        <div class="node-label">HubSpot</div>
+                    </div>
+                    <div class="system-node node-1">
+                        <div class="node-icon">📝</div>
+                        <div class="node-label">Formularios</div>
+                    </div>
+                    <div class="system-node node-2">
+                        <div class="node-icon">💬</div>
+                        <div class="node-label">WhatsApp</div>
+                    </div>
+                    <div class="system-node node-3">
+                        <div class="node-icon">📧</div>
+                        <div class="node-label">Notificaciones</div>
+                    </div>
+                    <svg class="flow-lines" viewBox="0 0 200 200">
+                        <path class="flow-path" d="M 100 100 L 40 40" />
+                        <path class="flow-path" d="M 100 100 L 160 40" />
+                        <path class="flow-path" d="M 100 100 L 100 170" />
+                    </svg>
+                    <div class="flow-particles">
+                        <div class="particle" style="--delay: 0.3s;"></div>
+                        <div class="particle" style="--delay: 0.8s;"></div>
+                        <div class="particle" style="--delay: 1.3s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-content">
+                <div class="system-name">Integración con HubSpot</div>
+                <div class="system-result">
+                    <span class="result-icon">↓</span>
+                    <span class="result-text">Pipeline de ventas automatizado</span>
+                </div>
+                <div class="system-desc">Automaticé la captura de leads, seguimiento y notificaciones en HubSpot conectado a formularios web y WhatsApp.</div>
+                <div class="system-stack">
+                    <span class="tag">HubSpot</span>
+                    <span class="tag">Leads</span>
+                    <span class="tag">Webhook</span>
+                </div>
+            </div>
+
+            <div class="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" data-target="100">0</div>
+                    <div class="metric-unit">%</div>
+                    <div class="metric-label">Leads capturados</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-target="0">0</div>
+                    <div class="metric-unit">min</div>
+                    <div class="metric-label">Tiempo respuesta</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 4: NOTION -->
+        <div class="system-card reveal" data-system="notion">
+            <div class="system-header">
+                <div class="system-status">
+                    <div class="status-indicator active"></div>
+                    <span class="status-label">EN PRODUCCIÓN</span>
+                </div>
+                <div class="system-badge">Productividad · Notion</div>
+            </div>
+
+            <div class="system-visual">
+                <div class="system-diagram">
+                    <div class="system-node center">
+                        <div class="node-icon">📓</div>
+                        <div class="node-label">Notion</div>
+                    </div>
+                    <div class="system-node node-1">
+                        <div class="node-icon">✅</div>
+                        <div class="node-label">Tareas</div>
+                    </div>
+                    <div class="system-node node-2">
+                        <div class="node-icon">📁</div>
+                        <div class="node-label">Proyectos</div>
+                    </div>
+                    <div class="system-node node-3">
+                        <div class="node-icon">📄</div>
+                        <div class="node-label">Documentos</div>
+                    </div>
+                    <svg class="flow-lines" viewBox="0 0 200 200">
+                        <path class="flow-path" d="M 100 100 L 40 40" />
+                        <path class="flow-path" d="M 100 100 L 160 40" />
+                        <path class="flow-path" d="M 100 100 L 100 170" />
+                    </svg>
+                    <div class="flow-particles">
+                        <div class="particle" style="--delay: 0.1s;"></div>
+                        <div class="particle" style="--delay: 0.6s;"></div>
+                        <div class="particle" style="--delay: 1.1s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-content">
+                <div class="system-name">Integración con Notion</div>
+                <div class="system-result">
+                    <span class="result-icon">↓</span>
+                    <span class="result-text">Base de conocimiento viva y automática</span>
+                </div>
+                <div class="system-desc">Sincronicé Notion como hub central de operaciones. Tareas, proyectos y documentos se actualizan solos desde otras plataformas.</div>
+                <div class="system-stack">
+                    <span class="tag">Notion</span>
+                    <span class="tag">API</span>
+                    <span class="tag">Flujos</span>
+                </div>
+            </div>
+
+            <div class="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" data-target="1">0</div>
+                    <div class="metric-unit">hub</div>
+                    <div class="metric-label">Centralizado</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-target="100">0</div>
+                    <div class="metric-unit">%</div>
+                    <div class="metric-label">Auto-actualizado</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 5: SUNAT -->
+        <div class="system-card reveal reveal-delay" data-system="sunat">
+            <div class="system-header">
+                <div class="system-status">
+                    <div class="status-indicator active"></div>
+                    <span class="status-label">EN PRODUCCIÓN</span>
+                </div>
+                <div class="system-badge">Tributario · SUNAT</div>
+            </div>
+
+            <div class="system-visual">
+                <div class="system-diagram">
+                    <div class="system-node center">
+                        <div class="node-icon">🏛️</div>
+                        <div class="node-label">SIRE</div>
+                    </div>
+                    <div class="system-node node-1">
+                        <div class="node-icon">🧾</div>
+                        <div class="node-label">Facturas</div>
+                    </div>
+                    <div class="system-node node-2">
+                        <div class="node-icon">📤</div>
+                        <div class="node-label">Envío Auto</div>
+                    </div>
+                    <div class="system-node node-3">
+                        <div class="node-icon">✓</div>
+                        <div class="node-label">Validación</div>
+                    </div>
+                    <svg class="flow-lines" viewBox="0 0 200 200">
+                        <path class="flow-path" d="M 100 100 L 40 40" />
+                        <path class="flow-path" d="M 100 100 L 160 40" />
+                        <path class="flow-path" d="M 100 100 L 100 170" />
+                    </svg>
+                    <div class="flow-particles">
+                        <div class="particle" style="--delay: 0.4s;"></div>
+                        <div class="particle" style="--delay: 0.9s;"></div>
+                        <div class="particle" style="--delay: 1.4s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-content">
+                <div class="system-name">Integración con SIRE SUNAT</div>
+                <div class="system-result">
+                    <span class="result-icon">↓</span>
+                    <span class="result-text">Declaración tributaria sin digitación</span>
+                </div>
+                <div class="system-desc">Automaticé extracción y envío de comprobantes electrónicos al SIRE de SUNAT. Cero errores manuales, cumplimiento garantizado.</div>
+                <div class="system-stack">
+                    <span class="tag">SIRE</span>
+                    <span class="tag">SUNAT</span>
+                    <span class="tag">Facturación electrónica</span>
+                </div>
+            </div>
+
+            <div class="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" data-target="0">0</div>
+                    <div class="metric-unit">errores</div>
+                    <div class="metric-label">Manuales</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-target="100">0</div>
+                    <div class="metric-unit">%</div>
+                    <div class="metric-label">Cumplimiento</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROYECTO 6: RESERVAS -->
+        <div class="system-card reveal reveal-delay2" data-system="reservas">
+            <div class="system-header">
+                <div class="system-status">
+                    <div class="status-indicator active"></div>
+                    <span class="status-label">EN PRODUCCIÓN</span>
+                </div>
+                <div class="system-badge">Turismo · Reservas</div>
+            </div>
+
+            <div class="system-visual">
+                <div class="system-diagram">
+                    <div class="system-node center">
+                        <div class="node-icon">🤖</div>
+                        <div class="node-label">Bot WA</div>
+                    </div>
+                    <div class="system-node node-1">
+                        <div class="node-icon">📩</div>
+                        <div class="node-label">Solicitudes</div>
+                    </div>
+                    <div class="system-node node-2">
+                        <div class="node-icon">💰</div>
+                        <div class="node-label">Pagos</div>
+                    </div>
+                    <div class="system-node node-3">
+                        <div class="node-icon">✅</div>
+                        <div class="node-label">Confirmaciones</div>
+                    </div>
+                    <svg class="flow-lines" viewBox="0 0 200 200">
+                        <path class="flow-path" d="M 100 100 L 40 40" />
+                        <path class="flow-path" d="M 100 100 L 160 40" />
+                        <path class="flow-path" d="M 100 100 L 100 170" />
+                    </svg>
+                    <div class="flow-particles">
+                        <div class="particle" style="--delay: 0.25s;"></div>
+                        <div class="particle" style="--delay: 0.75s;"></div>
+                        <div class="particle" style="--delay: 1.25s;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-content">
+                <div class="system-name">Sistema de reservas integral</div>
+                <div class="system-result">
+                    <span class="result-icon">↓</span>
+                    <span class="result-text">80% menos tiempo en gestión</span>
+                </div>
+                <div class="system-desc">Bot que recibe solicitudes, verifica disponibilidad, envía cotizaciones y confirma pagos automáticamente para agencias de turismo.</div>
+                <div class="system-stack">
+                    <span class="tag">Bot WhatsApp</span>
+                    <span class="tag">Pagos</span>
+                    <span class="tag">Automatización</span>
+                </div>
+            </div>
+
+            <div class="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" data-target="80">0</div>
+                    <div class="metric-unit">%</div>
+                    <div class="metric-label">Menos tiempo</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" data-target="24">0</div>
+                    <div class="metric-unit">/7</div>
+                    <div class="metric-label">Operativo</div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
 <div class="led-strip"></div>
 
 <!-- INVESTIGACIÓN -->
@@ -1180,6 +1911,34 @@ document.getElementById('videoWrap').addEventListener('click', function(){
             activatePhase(phase);
         });
     });
+})();
+
+// ── ANIMATED COUNTERS ──
+(function(){
+    const counters = document.querySelectorAll('.metric-value');
+    const counterObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                const el = entry.target;
+                const target = +el.dataset.target;
+                const duration = 1500;
+                const start = performance.now();
+                
+                function update(now){
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                    const current = Math.round(target * eased);
+                    el.textContent = current;
+                    if(progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+                counterObs.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => counterObs.observe(c));
 })();
 
 </script>
