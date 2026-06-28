@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    <script>document.documentElement.classList.remove('no-js');</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -714,6 +715,14 @@
 }
 
 /*fin nuevas tecnologias*/
+
+
+/* Fallback: si JS no carga, todo visible */
+.no-js .reveal,
+.no-js .section-base {
+    opacity: 1 !important;
+    transform: none !important;
+}
 
 @media(max-width: 600px){
     .phase-grid { grid-template-columns: 1fr; }
@@ -3258,10 +3267,48 @@ document.getElementById('turboBtn').addEventListener('click',e=>{
     setTimeout(()=>{document.getElementById('servicios').scrollIntoView({behavior:'smooth'});
         setTimeout(()=>{warp=false;wf.classList.remove('active');},600);},900);
 });
-const obs=new IntersectionObserver(entries=>entries.forEach((e,i)=>{
-    if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*55);
-}),{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+// ── REVEAL ANIMATIONS (MEJORADO) ──
+(function(){
+    const reveals = document.querySelectorAll('.reveal');
+    
+    // Fallback: si JS falla, todo visible
+    reveals.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(22px)';
+    });
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if(entry.isIntersecting){
+                // Delay escalonado pero más rápido
+                setTimeout(() => {
+                    entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('visible');
+                }, index * 30); // Más rápido: 30ms en vez de 55ms
+                
+                observer.unobserve(entry.target); // Deja de observar después de animar
+            }
+        });
+    }, {
+        threshold: 0.1, // 10% visible (más confiable)
+        rootMargin: '0px 0px -50px 0px' // Trigger un poco antes
+    });
+    
+    reveals.forEach(el => observer.observe(el));
+    
+    // Fallback de seguridad: después de 3s, todo visible
+    setTimeout(() => {
+        reveals.forEach(el => {
+            if(!el.classList.contains('visible')){
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+                el.classList.add('visible');
+            }
+        });
+    }, 3000);
+})();
 
 // ── VIDEO CLICK TO PLAY ──
 document.getElementById('videoWrap').addEventListener('click', function(){
@@ -3586,28 +3633,12 @@ _Enviado desde gianmarcobendezu.com_`;
 
 
 // ── GSAP ANIMACIONES PREMIUM ──
+// ── GSAP ANIMACIONES PREMIUM (SIN CONFLICTOS) ──
 (function(){
     if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    
     gsap.registerPlugin(ScrollTrigger);
     
-    // Animación de entrada para secciones
-    gsap.utils.toArray('.section-base').forEach(section => {
-        gsap.from(section, {
-            scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-                end: 'top 20%',
-                toggleActions: 'play none none reverse'
-            },
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            ease: 'power3.out'
-        });
-    });
-    
-    // Animación escalonada para cards
+    // Solo animar cards, NO las secciones completas (eso lo hace el observer)
     gsap.utils.toArray('.services-grid, .systems-grid, .pricing-grid').forEach(grid => {
         const cards = grid.querySelectorAll('.service-card, .system-card, .price-card');
         gsap.from(cards, {
@@ -3616,15 +3647,15 @@ _Enviado desde gianmarcobendezu.com_`;
                 start: 'top 80%',
                 toggleActions: 'play none none reverse'
             },
-            y: 80,
+            y: 60,
             opacity: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
+            duration: 0.7,
+            stagger: 0.1,
+            ease: 'power2.out'
         });
     });
     
-    // Parallax para imágenes de fondo
+    // Parallax suave para fondos (sin afectar visibilidad)
     gsap.utils.toArray('#problemas, #precios').forEach(section => {
         gsap.to(section, {
             scrollTrigger: {
