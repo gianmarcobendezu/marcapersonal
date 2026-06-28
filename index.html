@@ -3584,23 +3584,6 @@ _Enviado desde gianmarcobendezu.com_`;
 })();
 
 
-// Aplicar scramble a títulos
-(function(){
-    const titles = document.querySelectorAll('.section-title, h1');
-    titles.forEach(title => {
-        const originalText = title.innerText;
-        const fx = new TextScramble(title);
-        
-        const observer = new IntersectionObserver((entries) => {
-            if(entries[0].isIntersecting) {
-                fx.setText(originalText);
-                observer.unobserve(title);
-            }
-        }, { threshold: 0.5 });
-        
-        observer.observe(title);
-    });
-})();
 
 // ── GSAP ANIMACIONES PREMIUM ──
 (function(){
