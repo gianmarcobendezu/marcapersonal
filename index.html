@@ -23,6 +23,7 @@
     <link rel="canonical" href="https://gianmarcobendezu.com">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
     <style>
         :root {
             --accent:  #a5b4fc;
@@ -639,79 +640,6 @@
 
 
 /*nuevas tecnologias*/
-/* ── LOADER INICIAL ── */
-.loader {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    transition: opacity 0.8s, visibility 0.8s;
-}
-.loader.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-.loader-content {
-    text-align: center;
-}
-.loader-text {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    background: linear-gradient(90deg, var(--accent), var(--neon), var(--accent));
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 0.15em;
-    animation: shimmer 2s ease-in-out infinite, fadeInUp 1s ease;
-}
-@keyframes shimmer {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.loader-bar {
-    width: 300px;
-    height: 2px;
-    background: rgba(255,255,255,0.1);
-    margin: 2rem auto 1rem;
-    overflow: hidden;
-    border-radius: 2px;
-}
-.loader-progress {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--neon));
-    width: 0%;
-    animation: load 2.5s ease-out forwards;
-    box-shadow: 0 0 20px var(--accent);
-}
-@keyframes load {
-    to { width: 100%; }
-}
-.loader-percent {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--accent);
-    letter-spacing: 0.2em;
-}
-.loader-subtitle {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text);
-    letter-spacing: 0.3em;
-    margin-top: 1rem;
-    opacity: 0;
-    animation: fadeIn 1s ease 0.5s forwards;
-}
-@keyframes fadeIn {
-    to { opacity: 1; }
-}
 
 /* ── CURSOR PERSONALIZADO ── */
 .custom-cursor {
@@ -2085,17 +2013,7 @@
 
 <body>
 
-<!-- LOADER INICIAL -->
-<div class="loader" id="loader">
-    <div class="loader-content">
-        <div class="loader-text">SISTEK PERU</div>
-        <div class="loader-bar">
-            <div class="loader-progress"></div>
-        </div>
-        <div class="loader-percent" id="loaderPercent">0%</div>
-        <div class="loader-subtitle">INICIALIZANDO SISTEMAS</div>
-    </div>
-</div>
+
 
 <!-- CURSOR PERSONALIZADO -->
 <div class="custom-cursor" id="cursor"></div>
@@ -3568,28 +3486,7 @@ _Enviado desde gianmarcobendezu.com_`;
 
 /*nuevas tecnologias*/
 
-// ── LOADER INICIAL ──
-(function(){
-    const loader = document.getElementById('loader');
-    const percentEl = document.getElementById('loaderPercent');
-    let progress = 0;
-    
-    const interval = setInterval(() => {
-        progress += Math.random() * 10;
-        if(progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 500);
-        }
-        percentEl.textContent = Math.floor(progress) + '%';
-    }, 80);
-    
-    // Bloquear scroll durante carga
-    document.body.style.overflow = 'hidden';
-})();
+
 
 // ── CURSOR PERSONALIZADO ──
 (function(){
@@ -3627,6 +3524,7 @@ _Enviado desde gianmarcobendezu.com_`;
 })();
 
 // ── LENIS SMOOTH SCROLL ──
+// ── LENIS SMOOTH SCROLL (VERSIÓN ESTABLE) ──
 (function(){
     if(typeof Lenis === 'undefined') return;
     
@@ -3635,24 +3533,29 @@ _Enviado desde gianmarcobendezu.com_`;
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         wheelMultiplier: 1,
-        touchMultiplier: 2
+        touchMultiplier: 1.5,
+        infinite: false
     });
     
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-    
-    // Integrar con GSAP ScrollTrigger
+    // Integrar con GSAP si está disponible
     if(typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         lenis.on('scroll', ScrollTrigger.update);
+        
         gsap.ticker.add((time) => {
             lenis.raf(time * 1000);
         });
+        
         gsap.ticker.lagSmoothing(0);
+    } else {
+        // Si no hay GSAP, usar requestAnimationFrame normal
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
     }
 })();
+
 
 // ── THREE.JS FONDO 3D ──
 (function(){
