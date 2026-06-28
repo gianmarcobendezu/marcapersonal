@@ -645,6 +645,10 @@
         /* nuevos fin */
 
 
+
+
+
+
         /* ── ACTIVE SYSTEMS DASHBOARD ── */
 .systems-grid {
     display: grid;
@@ -950,6 +954,360 @@
     font-family: 'Space Mono', monospace;
     letter-spacing: 0.05em;
 }
+
+
+
+/**fin data */
+
+/* ── LEAD FORM — MISSION BRIEFING ── */
+#propuesta {
+    background: var(--bg3);
+}
+
+.briefing-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(3,3,16,0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(165,180,252,0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+.briefing-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), var(--accent), var(--blue), transparent);
+}
+
+.briefing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2rem;
+    background: rgba(0,0,0,0.4);
+    border-bottom: 1px solid rgba(165,180,252,0.1);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.briefing-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--neon);
+    letter-spacing: 0.18em;
+    font-weight: 600;
+}
+.briefing-status .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+    animation: pulse-status 2s ease-in-out infinite;
+}
+.briefing-id {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text);
+    letter-spacing: 0.1em;
+}
+
+/* Form */
+.briefing-form {
+    padding: 2.5rem 2rem;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+}
+.label-icon {
+    font-size: 0.85rem;
+}
+.required {
+    color: var(--red);
+    margin-left: 2px;
+}
+.form-input {
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(165,180,252,0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    transition: all 0.25s;
+    width: 100%;
+    box-sizing: border-box;
+}
+.form-input::placeholder {
+    color: var(--muted);
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(0,0,0,0.6);
+    box-shadow: 0 0 0 3px rgba(165,180,252,0.1);
+}
+.form-input.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+}
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a5b4fc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+.form-select option {
+    background: var(--bg3);
+    color: #fff;
+}
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: 'Inter', sans-serif;
+}
+.form-hint {
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.02em;
+}
+
+/* Consent */
+.form-consent {
+    margin-bottom: 1.8rem;
+    padding: 1rem 1.2rem;
+    background: rgba(165,180,252,0.03);
+    border: 1px solid rgba(165,180,252,0.1);
+    border-radius: 8px;
+}
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+.checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkbox-custom {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgba(165,180,252,0.3);
+    border-radius: 4px;
+    background: rgba(0,0,0,0.4);
+    position: relative;
+    transition: all 0.2s;
+    margin-top: 1px;
+}
+.checkbox-label input:checked ~ .checkbox-custom {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+.checkbox-label input:checked ~ .checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.checkbox-text {
+    font-size: 0.78rem;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+/* Actions */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 38px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 0 24px rgba(37,99,235,0.35);
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+.btn-submit:hover {
+    background: var(--blue2);
+    box-shadow: 0 0 32px rgba(59,130,246,0.5);
+    transform: translateY(-2px);
+}
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+.btn-submit.loading .btn-text { opacity: 0; }
+.btn-submit.loading .btn-loader {
+    display: block;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-loader { display: none; }
+
+.form-alt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text);
+}
+.alt-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.alt-link:hover { color: var(--neon); }
+
+/* Success */
+.form-success {
+    display: none;
+    padding: 3rem 2rem;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.form-success.show {
+    display: flex;
+    animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--neon);
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    box-shadow: 0 0 30px rgba(74,222,128,0.4);
+    animation: pulse-success 2s ease-in-out infinite;
+}
+@keyframes pulse-success {
+    0%,100% { box-shadow: 0 0 30px rgba(74,222,128,0.4); }
+    50% { box-shadow: 0 0 45px rgba(74,222,128,0.6); }
+}
+.success-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+}
+.success-desc {
+    font-size: 0.88rem;
+    color: var(--text);
+    max-width: 400px;
+    line-height: 1.6;
+}
+.success-desc strong { color: var(--accent); }
+
+/* Benefits */
+.briefing-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 900px;
+    margin: 2rem auto 0;
+}
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.2rem;
+    background: rgba(165,180,252,0.03);
+    border: 1px solid rgba(165,180,252,0.1);
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+.benefit-item:hover {
+    border-color: rgba(165,180,252,0.25);
+    transform: translateY(-2px);
+}
+.benefit-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+.benefit-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.benefit-desc {
+    font-size: 0.72rem;
+    color: var(--text);
+}
+
+/* Responsive */
+@media(max-width: 768px){
+    .form-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    .briefing-benefits { grid-template-columns: 1fr; }
+    .briefing-form { padding: 1.5rem 1.2rem; }
+    .briefing-header { padding: 1rem 1.2rem; }
+}
+
+
 
 /* Responsive */
 @media(max-width: 768px){
@@ -2254,6 +2612,169 @@
     </div>
 </section>
 
+
+<!-- FORMULARIO LEADS — MISSION BRIEFING -->
+<section id="propuesta" class="section-base">
+    <div class="reveal">
+        <div class="section-label">// solicitud de propuesta</div>
+        <h2 class="section-title">Cuéntame tu<br><em>proyecto</em></h2>
+        <p class="section-sub">Completa el briefing. En menos de 24h recibes una propuesta personalizada sin costo.</p>
+    </div>
+
+    <div class="briefing-container reveal">
+        <div class="briefing-header">
+            <div class="briefing-status">
+                <div class="status-indicator active"></div>
+                <span>FORMULARIO ACTIVO</span>
+            </div>
+            <div class="briefing-id">ID: PROP-<span id="propId">0000</span></div>
+        </div>
+
+        <form id="leadForm" class="briefing-form" novalidate>
+            <div class="form-grid">
+                <!-- Columna izquierda -->
+                <div class="form-column">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">👤</span>
+                            Nombre completo <span class="required">*</span>
+                        </label>
+                        <input type="text" name="nombre" class="form-input" placeholder="Ej: Juan Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">🏢</span>
+                            Empresa
+                        </label>
+                        <input type="text" name="empresa" class="form-input" placeholder="Ej: Mi Empresa SAC">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">📧</span>
+                            Email corporativo <span class="required">*</span>
+                        </label>
+                        <input type="email" name="email" class="form-input" placeholder="juan@empresa.com" required>
+                        <div class="form-hint">Usa tu email de trabajo para respuesta más rápida</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">📱</span>
+                            WhatsApp <span class="required">*</span>
+                        </label>
+                        <input type="tel" name="whatsapp" class="form-input" placeholder="+51 999 999 999" required>
+                    </div>
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="form-column">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">🎯</span>
+                            ¿Qué quieres automatizar? <span class="required">*</span>
+                        </label>
+                        <select name="servicio" class="form-input form-select" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="Bot WhatsApp/IA">Bot WhatsApp o asistente IA</option>
+                            <option value="Automatización de procesos">Automatización de procesos</option>
+                            <option value="Integración de sistemas">Integración entre sistemas</option>
+                            <option value="Reportes/Dashboards">Reportes y dashboards</option>
+                            <option value="Extracción de datos">Extracción automática de datos</option>
+                            <option value="Otro">Otro / No estoy seguro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">📝</span>
+                            Describe tu problema o necesidad
+                        </label>
+                        <textarea name="descripcion" class="form-input form-textarea" placeholder="Cuéntame qué tarea consume mucho tiempo, qué sistemas usas, qué resultado esperas..." rows="4"></textarea>
+                        <div class="form-hint">Entre más detalle, más precisa será la propuesta</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="label-icon">💰</span>
+                            Presupuesto estimado
+                        </label>
+                        <select name="presupuesto" class="form-input form-select">
+                            <option value="">Prefiero no decirlo ahora</option>
+                            <option value="$300-$700">$300 – $700 USD</option>
+                            <option value="$700-$1,500">$700 – $1,500 USD</option>
+                            <option value="$1,500+">$1,500+ USD</option>
+                            <option value="Necesito orientación">Necesito orientación</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consentimiento -->
+            <div class="form-consent">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="consent" required>
+                    <span class="checkbox-custom"></span>
+                    <span class="checkbox-text">Acepto ser contactado por Gianmarco Bendezu para recibir la propuesta. Mis datos serán tratados con confidencialidad.</span>
+                </label>
+            </div>
+
+            <!-- Botones -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <span class="btn-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </span>
+                    <span class="btn-text">Enviar solicitud</span>
+                    <span class="btn-loader"></span>
+                </button>
+                <div class="form-alt">
+                    <span>¿Prefieres hablar directo?</span>
+                    <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20automatizar%20mi%20empresa" target="_blank" class="alt-link">
+                        WhatsApp →
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <!-- Mensaje de éxito -->
+        <div class="form-success" id="formSuccess">
+            <div class="success-icon">✓</div>
+            <div class="success-title">¡Solicitud enviada!</div>
+            <div class="success-desc">Te redirigimos a WhatsApp para confirmar. Si no, escríbeme directo al <strong>+51 920 006 469</strong></div>
+        </div>
+    </div>
+
+    <!-- Beneficios -->
+    <div class="briefing-benefits reveal">
+        <div class="benefit-item">
+            <div class="benefit-icon">⚡</div>
+            <div class="benefit-text">
+                <div class="benefit-title">Respuesta en 24h</div>
+                <div class="benefit-desc">Propuesta clara con precio y plazos</div>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon">🔒</div>
+            <div class="benefit-text">
+                <div class="benefit-title">Confidencial</div>
+                <div class="benefit-desc">Tus datos y proyecto son privados</div>
+            </div>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon">🎁</div>
+            <div class="benefit-text">
+                <div class="benefit-title">Sin costo</div>
+                <div class="benefit-desc">Propuesta inicial 100% gratuita</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <!-- CONTACTO -->
 <section id="contacto" class="section-base">
     <div class="scene-label" id="scene-label"></div>
@@ -2444,6 +2965,103 @@ document.getElementById('videoWrap').addEventListener('click', function(){
     }, { threshold: 0.5 });
 
     counters.forEach(c => counterObs.observe(c));
+})();
+
+
+// ── LEAD FORM → WHATSAPP ──
+(function(){
+    const form = document.getElementById('leadForm');
+    const success = document.getElementById('formSuccess');
+    const propIdEl = document.getElementById('propId');
+    const PHONE = '51920006469'; // Tu número sin +
+
+    // Generar ID único
+    const propId = Date.now().toString().slice(-6);
+    if(propIdEl) propIdEl.textContent = propId;
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        // Validación
+        const inputs = form.querySelectorAll('[required]');
+        let valid = true;
+        inputs.forEach(input => {
+            if(input.type === 'checkbox'){
+                if(!input.checked){
+                    valid = false;
+                    input.parentElement.classList.add('error');
+                } else {
+                    input.parentElement.classList.remove('error');
+                }
+            } else if(!input.value.trim()){
+                valid = false;
+                input.classList.add('error');
+            } else {
+                input.classList.remove('error');
+            }
+        });
+
+        // Validar email
+        const email = form.email.value;
+        if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            valid = false;
+            form.email.classList.add('error');
+        }
+
+        if(!valid) return;
+
+        // Construir mensaje para WhatsApp
+        const data = {
+            nombre: form.nombre.value.trim(),
+            empresa: form.empresa.value.trim() || 'No especificada',
+            email: form.email.value.trim(),
+            whatsapp: form.whatsapp.value.trim(),
+            servicio: form.servicio.value,
+            descripcion: form.descripcion.value.trim() || 'Sin descripción',
+            presupuesto: form.presupuesto.value || 'No especificado'
+        };
+
+        const message = 
+`🚀 *NUEVA SOLICITUD DE PROPUESTA*
+━━━━━━━━━━━━━━━━━━
+📋 *ID:* PROP-${propId}
+
+👤 *Nombre:* ${data.nombre}
+🏢 *Empresa:* ${data.empresa}
+📧 *Email:* ${data.email}
+📱 *WhatsApp:* ${data.whatsapp}
+
+🎯 *Servicio:* ${data.servicio}
+💰 *Presupuesto:* ${data.presupuesto}
+
+📝 *Descripción:*
+${data.descripcion}
+━━━━━━━━━━━━━━━━━━
+_Enviado desde gianmarcobendezu.com_`;
+
+        // Mostrar loading
+        const btn = form.querySelector('.btn-submit');
+        btn.classList.add('loading');
+        btn.disabled = true;
+
+        // Redirigir a WhatsApp después de 1s
+        setTimeout(() => {
+            const waUrl = `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+
+            // Mostrar éxito
+            form.style.display = 'none';
+            success.classList.add('show');
+
+            // Scroll suave al éxito
+            success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1000);
+    });
+
+    // Limpiar errores al escribir
+    form.querySelectorAll('.form-input').forEach(input => {
+        input.addEventListener('input', () => input.classList.remove('error'));
+    });
 })();
 
 </script>
