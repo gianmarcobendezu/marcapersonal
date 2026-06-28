@@ -3131,10 +3131,11 @@
 
         <!-- Calendly inline widget -->
         <div class="calendly-inline-widget" 
-             data-url="https://calendly.com/gianmarco-bendezu/30min" 
-             style="min-width:320px;height:700px;">
-        </div>
-        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+     data-url="https://calendly.com/gianmarco-bendezu/30min" 
+     style="min-width:320px;height:700px;"
+     data-iframe="true">
+</div>
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
     </div>
 
     <div class="agenda-benefits reveal">
@@ -3268,32 +3269,27 @@ document.getElementById('turboBtn').addEventListener('click',e=>{
         setTimeout(()=>{warp=false;wf.classList.remove('active');},600);},900);
 });
 // ── REVEAL ANIMATIONS (MEJORADO) ──
+
+// ── REVEAL ANIMATIONS (MEJORADO) ──
 (function(){
     const reveals = document.querySelectorAll('.reveal');
-    
-    // Fallback: si JS falla, todo visible
-    reveals.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(22px)';
-    });
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
             if(entry.isIntersecting){
-                // Delay escalonado pero más rápido
                 setTimeout(() => {
                     entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
                     entry.target.classList.add('visible');
-                }, index * 30); // Más rápido: 30ms en vez de 55ms
+                }, index * 30);
                 
-                observer.unobserve(entry.target); // Deja de observar después de animar
+                observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.1, // 10% visible (más confiable)
-        rootMargin: '0px 0px -50px 0px' // Trigger un poco antes
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     });
     
     reveals.forEach(el => observer.observe(el));
@@ -3309,6 +3305,7 @@ document.getElementById('turboBtn').addEventListener('click',e=>{
         });
     }, 3000);
 })();
+
 
 // ── VIDEO CLICK TO PLAY ──
 document.getElementById('videoWrap').addEventListener('click', function(){
@@ -3634,11 +3631,13 @@ _Enviado desde gianmarcobendezu.com_`;
 
 // ── GSAP ANIMACIONES PREMIUM ──
 // ── GSAP ANIMACIONES PREMIUM (SIN CONFLICTOS) ──
+
+// ── GSAP ANIMACIONES PREMIUM (SIN CONFLICTOS) ──
 (function(){
     if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
     
-    // Solo animar cards, NO las secciones completas (eso lo hace el observer)
+    // SOLO animar cards individuales, NO secciones completas
     gsap.utils.toArray('.services-grid, .systems-grid, .pricing-grid').forEach(grid => {
         const cards = grid.querySelectorAll('.service-card, .system-card, .price-card');
         gsap.from(cards, {
@@ -3655,7 +3654,7 @@ _Enviado desde gianmarcobendezu.com_`;
         });
     });
     
-    // Parallax suave para fondos (sin afectar visibilidad)
+    // Parallax para fondos (sin afectar visibilidad)
     gsap.utils.toArray('#problemas, #precios').forEach(section => {
         gsap.to(section, {
             scrollTrigger: {
@@ -3669,6 +3668,8 @@ _Enviado desde gianmarcobendezu.com_`;
         });
     });
 })();
+
+
 
 // ── VANILLA TILT PARA CARDS ──
 (function(){
