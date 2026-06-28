@@ -343,6 +343,287 @@
         .wa-float:hover { transform:scale(1.1) translateY(-5px)!important; box-shadow:0 6px 24px rgba(37,211,102,0.55); }
         .wa-float svg { width: 26px; height: 26px; }
 
+        /**nuevos inicio*/
+        /* ── LAUNCH SEQUENCE ── */
+.launch-sequence {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Línea de progreso superior */
+.launch-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 720px;
+    margin: 3rem auto 4rem;
+    padding: 0 2rem;
+}
+.launch-track::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: rgba(165,180,252,0.1);
+    z-index: 1;
+}
+.launch-progress {
+    position: absolute;
+    top: 22px;
+    left: 10%;
+    width: 0%;
+    max-width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--accent), var(--neon));
+    z-index: 2;
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 0 12px var(--accent);
+}
+.launch-node {
+    position: relative;
+    z-index: 3;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 2px solid rgba(165,180,252,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    transition: all 0.5s;
+    cursor: pointer;
+}
+.launch-node span { position: relative; z-index: 2; }
+.launch-node::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    transition: all 0.5s;
+}
+.launch-node.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(165,180,252,0.6);
+    transform: scale(1.15);
+}
+.launch-node.active::after {
+    border-color: rgba(165,180,252,0.3);
+    animation: pulse-ring 2s ease-out infinite;
+}
+@keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Grid de fases */
+.phase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+.phase-card {
+    position: relative;
+    background: rgba(3,3,16,0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(165,180,252,0.08);
+    border-radius: 12px;
+    padding: 1.8rem 1.5rem;
+    transition: all 0.4s;
+    overflow: hidden;
+    cursor: pointer;
+}
+.phase-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    transform: scaleX(0);
+    transition: transform 0.5s;
+}
+.phase-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(165,180,252,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+}
+.phase-card:hover, .phase-card.active {
+    border-color: rgba(165,180,252,0.3);
+    transform: translateY(-6px);
+}
+.phase-card:hover::before, .phase-card.active::before { transform: scaleX(1); }
+.phase-card:hover::after, .phase-card.active::after { opacity: 1; }
+
+.phase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed rgba(165,180,252,0.1);
+}
+.phase-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+}
+.phase-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+}
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: blink-status 2s ease-in-out infinite;
+}
+.phase-card.active .status-dot,
+.phase-card:hover .status-dot {
+    background: var(--neon);
+    box-shadow: 0 0 8px var(--neon);
+}
+.phase-card.active .status-text { color: var(--neon); }
+@keyframes blink-status {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.phase-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(165,180,252,0.06);
+    border: 1px solid rgba(165,180,252,0.15);
+    border-radius: 10px;
+    color: var(--accent);
+    transition: all 0.3s;
+}
+.phase-icon svg { width: 24px; height: 24px; }
+.phase-card:hover .phase-icon,
+.phase-card.active .phase-icon {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(165,180,252,0.4);
+}
+
+.phase-name {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.01em;
+}
+.phase-subtitle {
+    font-size: 0.78rem;
+    color: var(--blue2);
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+.phase-desc {
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 1.3rem;
+    min-height: 75px;
+}
+.phase-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.meta-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    background: rgba(165,180,252,0.05);
+    border: 1px solid rgba(165,180,252,0.12);
+    border-radius: 4px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+}
+
+/* CTA final */
+.launch-cta {
+    margin-top: 4rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(165,180,252,0.04));
+    border: 1px solid rgba(165,180,252,0.15);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+}
+.launch-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+.launch-cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.launch-cta-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--blue);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+.launch-cta-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+}
+.launch-cta-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), var(--neon));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Responsive */
+@media(max-width: 900px){
+    .phase-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .phase-desc { min-height: auto; }
+}
+@media(max-width: 600px){
+    .phase-grid { grid-template-columns: 1fr; }
+    .launch-track { grid-template-columns: repeat(4, 1fr); padding: 0; }
+    .launch-node { width: 38px; height: 38px; font-size: 0.6rem; }
+    .launch-cta-inner { flex-direction: column; text-align: center; }
+}
+
+        /* nuevos fin */
         @media(max-width:768px){
             h1{font-size:2rem} .nav-link{display:none}
             .about-grid{grid-template-columns:1fr;gap:2rem}
@@ -434,17 +715,139 @@
 <div class="led-strip"></div>
 
 <!-- PROCESO -->
+<!-- PROCESO — LAUNCH SEQUENCE -->
 <section id="proceso" class="section-base">
     <div class="reveal">
         <div class="section-label">// 02 — cómo trabajo</div>
-        <h2 class="section-title">Del problema<br>al <em>sistema</em></h2>
-        <p class="section-sub" style="margin:0 auto;">Sin tecnicismos. Solo describe el problema — yo me encargo del resto.</p>
+        <h2 class="section-title">Secuencia de<br><em>lanzamiento</em></h2>
+        <p class="section-sub" style="margin:0 auto;">4 fases. Sin tecnicismos. Solo describe el problema — yo me encargo del resto.</p>
     </div>
-    <div class="process-track reveal">
-        <div class="process-step"><div class="step-circle">01</div><div class="step-name">Me cuentas</div><div class="step-desc">Describes qué tarea consume demasiado tiempo.</div></div>
-        <div class="process-step"><div class="step-circle">02</div><div class="step-name">Te propongo</div><div class="step-desc">En 24h recibes una propuesta clara con precio.</div></div>
-        <div class="process-step"><div class="step-circle">03</div><div class="step-name">Lo construyo</div><div class="step-desc">Desarrollo y ajusto con tu feedback en cada paso.</div></div>
-        <div class="process-step"><div class="step-circle">04</div><div class="step-name">Lo entrego</div><div class="step-desc">En marcha, funcionando, con soporte incluido.</div></div>
+
+    <div class="launch-sequence reveal">
+        <!-- Línea de progreso animada -->
+        <div class="launch-track">
+            <div class="launch-progress" id="launchProgress"></div>
+            <div class="launch-node" data-phase="1"><span>01</span></div>
+            <div class="launch-node" data-phase="2"><span>02</span></div>
+            <div class="launch-node" data-phase="3"><span>03</span></div>
+            <div class="launch-node" data-phase="4"><span>04</span></div>
+        </div>
+
+        <!-- Tarjetas de fase -->
+        <div class="phase-grid">
+            <!-- FASE 1 -->
+            <div class="phase-card" data-phase="1">
+                <div class="phase-header">
+                    <div class="phase-number">01</div>
+                    <div class="phase-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">INICIALIZANDO</span>
+                    </div>
+                </div>
+                <div class="phase-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        <path d="M8 10h.01M12 10h.01M16 10h.01" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="phase-name">Briefing</div>
+                <div class="phase-subtitle">Me cuentas el problema</div>
+                <div class="phase-desc">Me describes qué tarea consume demasiado tiempo. Escucho, pregunto y entiendo tu operación real.</div>
+                <div class="phase-meta">
+                    <span class="meta-tag">📍 WhatsApp / Videollamada</span>
+                    <span class="meta-tag">⏱ 30 min</span>
+                </div>
+            </div>
+
+            <!-- FASE 2 -->
+            <div class="phase-card" data-phase="2">
+                <div class="phase-header">
+                    <div class="phase-number">02</div>
+                    <div class="phase-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">ANALIZANDO</span>
+                    </div>
+                </div>
+                <div class="phase-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                        <path d="M11 8v6M8 11h6" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="phase-name">Diagnóstico</div>
+                <div class="phase-subtitle">Te propongo la solución</div>
+                <div class="phase-desc">En menos de 24h recibes una propuesta clara: qué se automatiza, cómo, en cuánto tiempo y a qué precio.</div>
+                <div class="phase-meta">
+                    <span class="meta-tag">📄 Propuesta PDF</span>
+                    <span class="meta-tag">⏱ 24h</span>
+                </div>
+            </div>
+
+            <!-- FASE 3 -->
+            <div class="phase-card" data-phase="3">
+                <div class="phase-header">
+                    <div class="phase-number">03</div>
+                    <div class="phase-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">CONSTRUYENDO</span>
+                    </div>
+                </div>
+                <div class="phase-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="m18 16 4-4-4-4"/>
+                        <path d="m6 8-4 4 4 4"/>
+                        <path d="m14.5 4-5 16"/>
+                    </svg>
+                </div>
+                <div class="phase-name">Desarrollo</div>
+                <div class="phase-subtitle">Lo construyo contigo</div>
+                <div class="phase-desc">Desarrollo la solución con avances semanales. Ajustamos en cada paso — cero sorpresas al final.</div>
+                <div class="phase-meta">
+                    <span class="meta-tag">🔄 Avances semanales</span>
+                    <span class="meta-tag">⏱ 1–4 sem</span>
+                </div>
+            </div>
+
+            <!-- FASE 4 -->
+            <div class="phase-card" data-phase="4">
+                <div class="phase-header">
+                    <div class="phase-number">04</div>
+                    <div class="phase-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">EN ÓRBITA</span>
+                    </div>
+                </div>
+                <div class="phase-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                    </svg>
+                </div>
+                <div class="phase-name">Lanzamiento</div>
+                <div class="phase-subtitle">Lo entrego funcionando</div>
+                <div class="phase-desc">Tu sistema en marcha, con capacitación al equipo y soporte incluido. Listo para escalar.</div>
+                <div class="phase-meta">
+                    <span class="meta-tag">✅ Soporte incluido</span>
+                    <span class="meta-tag">🚀 Go-live</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA final -->
+        <div class="launch-cta reveal">
+            <div class="launch-cta-inner">
+                <div class="launch-cta-text">
+                    <div class="launch-cta-label">// siguiente paso</div>
+                    <div class="launch-cta-title">¿Listo para <em>despegar</em>?</div>
+                </div>
+                <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20iniciar%20mi%20proyecto" class="btn btn-primary" target="_blank">
+                    Iniciar fase 01 →
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -731,6 +1134,54 @@ document.getElementById('videoWrap').addEventListener('click', function(){
     section.style.backgroundImage = `url('${scenes[chosen].url}')`;
     label.textContent = scenes[chosen].name;
 })();
+
+//qrx
+// ── LAUNCH SEQUENCE ANIMATION ──
+(function(){
+    const cards = document.querySelectorAll('.phase-card');
+    const nodes = document.querySelectorAll('.launch-node');
+    const progress = document.getElementById('launchProgress');
+    let currentPhase = 0;
+
+    function activatePhase(n){
+        if(n === currentPhase) return;
+        currentPhase = n;
+        cards.forEach(c => c.classList.toggle('active', +c.dataset.phase <= n));
+        nodes.forEach(nd => nd.classList.toggle('active', +nd.dataset.phase <= n));
+        // Progreso: 0% → 100% según fase
+        const pct = n === 0 ? 0 : ((n - 1) / 3) * 100;
+        if(progress) progress.style.width = pct + '%';
+    }
+
+    // Animación secuencial al entrar en viewport
+    const seqObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                let step = 0;
+                const interval = setInterval(() => {
+                    step++;
+                    activatePhase(step);
+                    if(step >= 4) clearInterval(interval);
+                }, 450);
+                seqObs.disconnect();
+            }
+        });
+    }, { threshold: 0.25 });
+
+    const section = document.getElementById('proceso');
+    if(section) seqObs.observe(section);
+
+    // Click en nodo salta a la fase
+    nodes.forEach(nd => {
+        nd.addEventListener('click', () => {
+            const phase = +nd.dataset.phase;
+            const card = document.querySelector(`.phase-card[data-phase="${phase}"]`);
+            if(card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            activatePhase(phase);
+        });
+    });
+})();
+
 </script>
 </body>
 </html>
