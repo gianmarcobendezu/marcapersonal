@@ -724,6 +724,14 @@
     transform: none !important;
 }
 
+/* Instagram styles */
+.platform-icon.ig {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+.content-card.ig::after {
+    background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+}
+
 @media(max-width: 600px){
     .phase-grid { grid-template-columns: 1fr; }
     .launch-track { grid-template-columns: repeat(4, 1fr); padding: 0; }
@@ -2930,6 +2938,21 @@
             <div class="content-handle">Gianmarco Bendezu</div>
             <div class="content-desc">Casos de estudio, IA predictiva y reflexiones sobre automatización empresarial.</div>
             <div class="content-arrow">Conectar <span>→</span></div>
+        </a>
+        <a href="https://www.instagram.com/gianmarcobendezu" class="content-card ig" target="_blank">
+            <div class="content-platform">
+                <div class="platform-icon ig">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="white" stroke-width="2"/>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="white" stroke-width="2"/>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="platform-name">Instagram</span>
+            </div>
+            <div class="content-handle">@gianmarcobendezu/</div>
+            <div class="content-desc">Mi vida diaria, lugares que visito, amistades y logros personales.</div>
+            <div class="content-arrow">Seguir <span>→</span></div>
         </a>
     </div>
 </section>
