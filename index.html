@@ -3,26 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gianmarco Bendezú — Automatización e IA para empresas</title>
-    <meta name="description" content="Ahorra horas de trabajo manual con automatización e inteligencia artificial. Soluciones a medida para empresas de cualquier rubro en Perú.">
+    <title>Gianmarco Bendezu — Automatización e IA | Sistek Peru</title>
+    <meta name="description" content="Automatización e inteligencia artificial para empresas. Menos trabajo manual, más resultados. Perú y Latinoamérica.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --accent:  #a5b4fc;
+            --accent2: #818cf8;
+            --blue:    #2563eb;
+            --blue2:   #3b82f6;
+            --neon:    #4ade80;
+            --red:     #ef4444;
+            --bg:      #000;
+            --bg2:     #030308;
+            --bg3:     #040410;
+            --border:  rgba(165,180,252,0.1);
+            --muted:   #334155;
+            --text:    #64748b;
+        }
         html { scroll-behavior: smooth; }
-
         body, html {
             margin: 0; padding: 0; width: 100%; min-height: 100%;
-            background: #000; font-family: 'Inter', sans-serif; color: white;
+            background: var(--bg); font-family: 'Inter', sans-serif; color: white;
             overflow-x: hidden; overflow-y: auto; cursor: auto;
         }
+        #cosmos { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 
-        #cosmos {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+        /* TIRA LED */
+        .led-strip {
+            position: relative; z-index: 5; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(37,99,235,0) 5%, rgba(37,99,235,0.6) 20%, rgba(165,180,252,0.9) 40%, rgba(59,130,246,1) 50%, rgba(165,180,252,0.9) 60%, rgba(37,99,235,0.6) 80%, rgba(37,99,235,0) 95%, transparent 100%);
+            animation: led-strip-pulse 3s ease-in-out infinite;
         }
+        .led-strip::after { content: ''; position: absolute; inset: 0; background: inherit; filter: blur(4px); opacity: 0.6; }
+        @keyframes led-strip-pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+
+        .section-base { position: relative; z-index: 5; padding: 6rem 5%; }
+        .section-base::before {
+            content: ''; position: absolute; left: 2.5%; top: 15%; bottom: 15%; width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(37,99,235,0.4) 30%, rgba(165,180,252,0.6) 50%, rgba(37,99,235,0.4) 70%, transparent);
+            animation: led-vert-pulse 4s ease-in-out infinite; pointer-events: none;
+        }
+        @keyframes led-vert-pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+        /* LED DOTS */
+        .led-dot {
+            position: absolute; top: 10px; right: 10px; width: 5px; height: 5px; border-radius: 50%;
+            background: var(--blue); box-shadow: 0 0 6px var(--blue), 0 0 12px rgba(37,99,235,0.4);
+            animation: led-blink 2s ease-in-out infinite;
+        }
+        @keyframes led-blink { 0%,100%{opacity:1;box-shadow:0 0 6px var(--blue),0 0 14px rgba(37,99,235,0.5)} 50%{opacity:0.15;box-shadow:none} }
+        .led-dot.green  { background:var(--neon);  box-shadow:0 0 6px var(--neon);  animation-name:led-blink-g }
+        .led-dot.violet { background:var(--accent); box-shadow:0 0 6px var(--accent);animation-name:led-blink-v }
+        @keyframes led-blink-g  { 0%,100%{opacity:1;box-shadow:0 0 6px #4ade80,0 0 14px rgba(74,222,128,0.4)} 50%{opacity:0.1;box-shadow:none} }
+        @keyframes led-blink-v  { 0%,100%{opacity:1;box-shadow:0 0 6px #a5b4fc,0 0 14px rgba(165,180,252,0.4)} 50%{opacity:0.1;box-shadow:none} }
 
         .warp-flash {
             position: fixed; inset: 0; z-index: 4; pointer-events: none;
-            background: radial-gradient(circle at center, rgba(200,220,255,0.25) 0%, transparent 50%);
+            background: radial-gradient(circle at center, rgba(165,180,252,0.12) 0%, transparent 60%);
             opacity: 0; transition: opacity 0.15s ease-out;
         }
         .warp-flash.active { opacity: 1; }
@@ -33,469 +71,245 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             pointer-events: none; text-align: center;
         }
-
         nav {
             position: absolute; top: 0; left: 0; right: 0;
-            width: 100%; max-width: 1300px; margin: 0 auto;
-            padding: 2.5rem 5%;
+            width: 100%; max-width: 1300px; margin: 0 auto; padding: 2rem 5%;
             display: flex; justify-content: space-between; align-items: center;
             pointer-events: auto; box-sizing: border-box;
         }
-
-        .logo {
-            display: flex; align-items: center; gap: 10px;
-            color: white; font-family: Arial, sans-serif;
-            font-size: 22px; font-weight: 600;
-        }
-
-        .interactive-link {
-            color: rgba(255,255,255,0.6); text-decoration: none; margin-left: 2.5rem;
-            font-size: 0.9rem; transition: color 0.3s;
-        }
-        .interactive-link:hover { color: #fff; }
+        .logo { display: flex; align-items: center; gap: 10px; color: white; font-family: Arial, sans-serif; font-size: 20px; font-weight: 600; }
+        .nav-link { color: rgba(255,255,255,0.45); text-decoration: none; margin-left: 2rem; font-size: 0.8rem; letter-spacing: 0.03em; transition: color 0.25s; }
+        .nav-link:hover { color: var(--blue2); }
 
         /* HERO */
-        .hero-content {
-            padding: 2rem;
-            pointer-events: auto;
-            max-width: 780px;
-        }
-
+        .hero-content { padding: 2rem; pointer-events: auto; max-width: 700px; }
         .hero-status {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 6px 16px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50px;
-            font-size: 0.75rem; color: rgba(255,255,255,0.45);
-            letter-spacing: 0.06em;
-            margin-bottom: 2.2rem;
-            font-family: 'Space Mono', monospace;
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 5px 14px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 50px;
+            font-size: 0.68rem; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; margin-bottom: 2rem; font-family: 'Space Mono', monospace;
         }
-        .hero-status-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: #4ade80;
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-        @keyframes pulse-dot {
-            0%,100% { opacity: 1; } 50% { opacity: 0.3; }
-        }
-
+        .hero-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon); animation: pulse-dot 2s ease-in-out infinite; box-shadow: 0 0 5px var(--neon); }
+        @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
         h1 {
-            font-size: clamp(2.2rem, 3.8vw, 3.4rem);
-            font-weight: 800; margin: 0 0 1.8rem 0; line-height: 1.1;
-            background: linear-gradient(to bottom, #ffffff 30%, #a5b4fc 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
+            font-size: clamp(2rem, 3.6vw, 3.2rem); font-weight: 800; margin: 0 0 2rem; line-height: 1.1;
+            background: linear-gradient(160deg, #ffffff 40%, var(--accent) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.025em;
         }
-
-        .hero-ctas {
-            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-        }
-
+        .hero-ctas { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
         .btn {
-            display: inline-block; padding: 15px 38px; border-radius: 50px;
+            display: inline-block; padding: 13px 32px; border-radius: 50px;
             background: rgba(255,255,255,0.05); color: white; text-decoration: none;
-            font-weight: 600; border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease; backdrop-filter: blur(5px);
-            font-size: 0.95rem;
+            font-weight: 600; border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.25s; backdrop-filter: blur(8px); font-size: 0.88rem;
         }
-        .btn:hover { background: white; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.4); transform: scale(1.04); }
-        .btn-primary {
-            background: #a5b4fc; color: #000; border-color: #a5b4fc;
-            font-weight: 700;
-        }
-        .btn-primary:hover { background: #fff; border-color: #fff; }
+        .btn:hover { background: white; color: #000; box-shadow: 0 0 24px rgba(255,255,255,0.25); transform: scale(1.03); }
+        .btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); font-weight: 700; box-shadow: 0 0 20px rgba(37,99,235,0.35); }
+        .btn-primary:hover { background: var(--blue2); border-color: var(--blue2); box-shadow: 0 0 28px rgba(59,130,246,0.5); }
 
         /* TRUST BAR */
         .trust-bar {
-            position: relative; z-index: 5;
-            background: rgba(255,255,255,0.03);
-            border-top: 1px solid rgba(255,255,255,0.06);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding: 1.4rem 5%;
-            display: flex; justify-content: center; align-items: center;
-            gap: 3rem; flex-wrap: wrap;
+            position: relative; z-index: 5; background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1.1rem 5%; display: flex; justify-content: center; align-items: center; gap: 2.5rem; flex-wrap: wrap;
         }
-        .trust-item {
-            display: flex; align-items: center; gap: 0.6rem;
-            font-size: 0.83rem; color: #64748b;
-        }
-        .trust-item span { color: #a5b4fc; font-size: 1rem; }
+        .trust-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.76rem; color: var(--muted); }
+        .trust-item span { color: var(--blue); }
 
         /* SECCIONES */
-        .section-base {
-            position: relative; z-index: 5;
-            padding: 7rem 5%;
-        }
-
-        .section-label {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.68rem; color: #a5b4fc;
-            letter-spacing: 0.35em; text-transform: uppercase;
-            margin-bottom: 0.8rem;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 3.5vw, 3rem);
-            font-weight: 800; color: #fff;
-            line-height: 1.1; margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-        .section-title em {
-            font-style: normal;
-            background: linear-gradient(90deg, #a5b4fc, #818cf8);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .section-sub {
-            color: #94a3b8; font-size: 1rem; line-height: 1.75;
-            max-width: 580px; margin-bottom: 3.5rem;
-        }
-
-        /* REVEAL */
-        .reveal {
-            opacity: 0; transform: translateY(28px);
-            transition: opacity 0.65s ease, transform 0.65s ease;
-        }
+        .section-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--blue); letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 0.7rem; }
+        .section-title { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 0.8rem; letter-spacing: -0.025em; }
+        .section-title em { font-style: normal; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-sub { color: var(--text); font-size: 0.9rem; line-height: 1.7; max-width: 480px; margin-bottom: 3rem; }
+        .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-delay { transition-delay: 0.12s; }
-        .reveal-delay2 { transition-delay: 0.22s; }
+        .reveal-delay { transition-delay: 0.1s; }
+        .reveal-delay2 { transition-delay: 0.2s; }
+        .tag { padding: 2px 8px; background: rgba(165,180,252,0.06); border: 1px solid rgba(165,180,252,0.14); border-radius: 3px; font-family: 'Space Mono', monospace; font-size: 0.58rem; color: var(--accent2); }
 
-        /* ---- PROBLEMAS (por qué contratarme) ---- */
-        #problemas { background: linear-gradient(to bottom, transparent, #000 20%); }
+        /* PROBLEMAS */
+        #problemas {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.88) 100%),
+            url('https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1920&q=85&auto=format&fit=crop') center/cover no-repeat fixed;
+        }
+        .problems-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; max-width: 1100px; background: rgba(165,180,252,0.06); border: 1px solid rgba(165,180,252,0.08); overflow: hidden; }
+        .problem-card { background: rgba(0,0,0,0.7); padding: 1.5rem 1.3rem; backdrop-filter: blur(4px); transition: background 0.3s; }
+        .problem-card:hover { background: rgba(165,180,252,0.04); }
+        .problem-emoji { font-size: 1.4rem; margin-bottom: 0.7rem; display: block; }
+        .problem-q { font-size: 0.86rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.35rem; line-height: 1.4; }
+        .problem-a { font-size: 0.78rem; color: var(--text); line-height: 1.55; }
+        .problem-a strong { color: var(--accent); }
 
-        .problems-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem; max-width: 1100px;
-        }
-
-        .problem-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px;
-            padding: 1.8rem;
-            transition: border-color 0.3s, background 0.3s;
-        }
-        .problem-card:hover {
-            border-color: rgba(165,180,252,0.25);
-            background: rgba(165,180,252,0.04);
-        }
-        .problem-emoji { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
-        .problem-q { font-size: 0.95rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; line-height: 1.4; }
-        .problem-a { font-size: 0.85rem; color: #64748b; line-height: 1.6; }
-        .problem-a strong { color: #a5b4fc; }
-
-        /* ---- SERVICIOS ---- */
-        #servicios { background: #030308; }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 12px;
-            overflow: hidden;
-            max-width: 1100px;
-        }
-
-        .service-card {
-            background: #030308;
-            padding: 2.4rem 2rem;
-            position: relative; transition: background 0.3s;
-            overflow: hidden;
-        }
-        .service-card::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, #a5b4fc, #7c3aed);
-            transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
-        }
-        .service-card:hover { background: #07070f; }
+        /* SERVICIOS */
+        #servicios { background: var(--bg2); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1px; background: rgba(165,180,252,0.06); border: 1px solid rgba(165,180,252,0.08); overflow: hidden; max-width: 1100px; }
+        .service-card { background: var(--bg2); padding: 2rem 1.8rem; position: relative; transition: background 0.3s; overflow: hidden; }
+        .service-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, var(--blue), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s; }
+        .service-card:hover { background: rgba(37,99,235,0.03); }
         .service-card:hover::after { transform: scaleX(1); }
+        .service-icon { font-size: 1.7rem; margin-bottom: 0.9rem; display: block; }
+        .service-name { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
+        .service-benefit { font-size: 0.74rem; color: var(--blue2); margin-bottom: 0.7rem; }
+        .service-desc { font-size: 0.8rem; color: var(--text); line-height: 1.65; }
+        .service-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 1rem; }
 
-        .service-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
-        .service-name { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
-        .service-benefit {
-            font-size: 0.82rem; color: #a5b4fc;
-            font-style: italic; margin-bottom: 0.8rem;
-        }
-        .service-desc { font-size: 0.86rem; color: #64748b; line-height: 1.7; }
-        .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
-        .tag {
-            padding: 3px 9px;
-            background: rgba(165,180,252,0.07);
-            border: 1px solid rgba(165,180,252,0.15);
-            border-radius: 3px;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.6rem; color: #818cf8; letter-spacing: 0.06em;
-        }
+        /* PROCESO */
+        #proceso { background: var(--bg3); text-align: center; }
+        .process-track { display: grid; grid-template-columns: repeat(4, 1fr); margin: 3rem auto 0; position: relative; max-width: 860px; }
+        .process-track::before { content: ''; position: absolute; top: 25px; left: 12.5%; right: 12.5%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), var(--accent), transparent); }
+        .process-step { text-align: center; padding: 0 0.8rem; position: relative; z-index: 1; }
+        .step-circle { width: 50px; height: 50px; border: 1px solid rgba(165,180,252,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--accent); background: var(--bg3); transition: all 0.3s; }
+        .process-step:hover .step-circle { background: var(--accent); color: #000; border-color: var(--accent); box-shadow: 0 0 14px rgba(165,180,252,0.4); }
+        .step-name { font-size: 0.86rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+        .step-desc { font-size: 0.75rem; color: var(--text); line-height: 1.55; }
 
-        /* ---- SOBRE MÍ ---- */
-        #sobre-mi { background: #000; }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 5rem; align-items: center;
-            max-width: 1100px; margin: 0 auto;
+        /* PRECIOS */
+        #precios {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, rgba(3,3,16,0.9) 100%),
+            url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=85&auto=format&fit=crop') center/cover no-repeat fixed;
         }
-
-        .terminal-box {
-            background: #0a0a14;
-            border: 1px solid rgba(165,180,252,0.15);
-            border-radius: 10px;
-            padding: 2rem 2rem 2.4rem;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.78rem; line-height: 2;
-        }
-        .terminal-bar { display: flex; gap: 6px; margin-bottom: 1.4rem; }
-        .terminal-dot { width: 11px; height: 11px; border-radius: 50%; }
-        .td-r { background: #ff5f57; } .td-y { background: #febc2e; } .td-g { background: #28c840; }
-        .t-m { color: #4a5568; } .t-g { color: #68d391; } .t-b { color: #a5b4fc; } .t-w { color: #e2e8f0; }
-        .t-cur { animation: blink 1s step-end infinite; }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-        .credentials {
-            display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;
-        }
-        .credential-item {
-            display: flex; align-items: flex-start; gap: 0.8rem;
-            padding: 1rem 1.2rem;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 8px;
-        }
-        .credential-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
-        .credential-title { font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
-        .credential-sub { font-size: 0.78rem; color: #64748b; }
-
-        .skills-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
-        .skill-pill {
-            padding: 5px 13px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.09);
-            border-radius: 4px;
-            font-size: 0.78rem; color: #94a3b8;
-            transition: all 0.3s;
-        }
-        .skill-pill:hover { border-color: #a5b4fc; color: #a5b4fc; }
-
-        /* ---- PROCESO ---- */
-        #proceso { background: #030308; text-align: center; }
-
-        .process-track {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 0; margin: 3.5rem auto 0; position: relative; max-width: 900px;
-        }
-        .process-track::before {
-            content: ''; position: absolute;
-            top: 27px; left: calc(12.5%); right: calc(12.5%);
-            height: 1px;
-            background: linear-gradient(90deg, #a5b4fc44, #7c3aed88, #a5b4fc44);
-        }
-        .process-step { text-align: center; padding: 0 1rem; position: relative; z-index: 1; }
-        .step-circle {
-            width: 54px; height: 54px;
-            border: 1px solid rgba(165,180,252,0.35);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1.4rem;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.72rem; color: #a5b4fc; background: #030308;
-            transition: all 0.3s;
-        }
-        .process-step:hover .step-circle { background: #a5b4fc; color: #000; border-color: #a5b4fc; }
-        .step-name { font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
-        .step-desc { font-size: 0.8rem; color: #64748b; line-height: 1.6; }
-
-        /* ---- PRECIOS ---- */
-        #precios { background: #000; }
-
-        .pricing-note {
-            display: inline-block;
-            padding: 8px 20px;
-            background: rgba(165,180,252,0.08);
-            border: 1px solid rgba(165,180,252,0.2);
-            border-radius: 50px;
-            font-size: 0.8rem; color: #a5b4fc;
-            margin-bottom: 3rem;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem; max-width: 1050px;
-        }
-
-        .price-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 2.4rem 2rem;
-            position: relative; transition: all 0.3s;
-        }
-        .price-card:hover {
-            border-color: rgba(165,180,252,0.3);
-            transform: translateY(-4px);
-        }
-        .price-card.featured {
-            background: rgba(165,180,252,0.06);
-            border-color: rgba(165,180,252,0.35);
-        }
-        .featured-badge {
-            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-            background: #a5b4fc; color: #000;
-            font-size: 0.68rem; font-weight: 700;
-            padding: 4px 16px; border-radius: 50px;
-            letter-spacing: 0.08em; text-transform: uppercase;
-            white-space: nowrap;
-        }
-        .price-tier { font-size: 0.7rem; color: #a5b4fc; letter-spacing: 0.2em; text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 0.6rem; }
-        .price-name { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
-        .price-desc { font-size: 0.84rem; color: #64748b; line-height: 1.6; margin-bottom: 1.8rem; }
-        .price-amount {
-            margin-bottom: 1.8rem;
-            padding-bottom: 1.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-        .price-from { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.1em; }
-        .price-num { font-size: 2.6rem; font-weight: 800; color: #fff; line-height: 1.1; }
-        .price-num span { font-size: 1rem; font-weight: 400; color: #64748b; }
-        .price-note { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
-        .price-features { list-style: none; padding: 0; margin: 0 0 2rem 0; }
-        .price-features li {
-            font-size: 0.86rem; color: #94a3b8;
-            padding: 0.45rem 0;
-            display: flex; align-items: flex-start; gap: 0.6rem;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
+        .pricing-note { display: inline-block; padding: 5px 14px; background: rgba(165,180,252,0.06); border: 1px solid rgba(165,180,252,0.15); border-radius: 50px; font-size: 0.72rem; color: var(--accent); margin-bottom: 2.5rem; font-family: 'Space Mono', monospace; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.2rem; max-width: 980px; }
+        .price-card { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(165,180,252,0.08); border-radius: 10px; padding: 2.2rem 1.8rem; position: relative; transition: all 0.3s; }
+        .price-card:hover { border-color: rgba(165,180,252,0.22); transform: translateY(-3px); }
+        .price-card.featured { background: rgba(165,180,252,0.05); border-color: rgba(165,180,252,0.28); }
+        .featured-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; font-size: 0.6rem; font-weight: 700; padding: 3px 12px; border-radius: 50px; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; font-family: 'Space Mono', monospace; }
+        .price-tier { font-size: 0.58rem; color: var(--accent); letter-spacing: 0.28em; text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 0.4rem; }
+        .price-name { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+        .price-desc { font-size: 0.78rem; color: var(--text); line-height: 1.55; margin-bottom: 1.4rem; }
+        .price-amount { margin-bottom: 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(165,180,252,0.08); }
+        .price-from { font-size: 0.62rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.12em; font-family: 'Space Mono', monospace; }
+        .price-num { font-size: 2.3rem; font-weight: 800; color: #fff; line-height: 1.1; }
+        .price-num span { font-size: 0.85rem; font-weight: 400; color: var(--text); }
+        .price-note { font-size: 0.66rem; color: var(--text); margin-top: 3px; font-family: 'Space Mono', monospace; }
+        .price-features { list-style: none; padding: 0; margin: 0 0 1.6rem; }
+        .price-features li { font-size: 0.8rem; color: #94a3b8; padding: 0.35rem 0; display: flex; align-items: flex-start; gap: 0.5rem; border-bottom: 1px solid rgba(165,180,252,0.05); }
         .price-features li:last-child { border-bottom: none; }
-        .price-features li::before { content: '✓'; color: #a5b4fc; font-weight: 700; flex-shrink: 0; }
-        .price-cta {
-            display: block; text-align: center;
-            padding: 13px; border-radius: 8px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #e2e8f0; text-decoration: none;
-            font-weight: 600; font-size: 0.88rem;
-            transition: all 0.3s;
-        }
+        .price-features li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+        .price-cta { display: block; text-align: center; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(165,180,252,0.18); color: #e2e8f0; text-decoration: none; font-weight: 600; font-size: 0.82rem; transition: all 0.25s; }
         .price-cta:hover { background: white; color: #000; }
-        .price-card.featured .price-cta {
-            background: #a5b4fc; color: #000; border-color: #a5b4fc;
-        }
+        .price-card.featured .price-cta { background: var(--accent); color: #000; border-color: var(--accent); }
         .price-card.featured .price-cta:hover { background: #fff; border-color: #fff; }
 
-        /* ---- PORTFOLIO ---- */
-        #portfolio { background: #030308; }
+        /* PORTFOLIO */
+        #portfolio { background: var(--bg2); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1px; max-width: 1100px; background: rgba(165,180,252,0.06); border: 1px solid rgba(165,180,252,0.08); }
+        .project-card { background: var(--bg2); padding: 1.8rem; transition: all 0.3s; }
+        .project-card:hover { background: rgba(165,180,252,0.03); }
+        .project-badge { display: inline-block; padding: 2px 8px; background: rgba(165,180,252,0.07); border: 1px solid rgba(165,180,252,0.15); font-size: 0.58rem; color: var(--accent); font-family: 'Space Mono', monospace; letter-spacing: 0.08em; margin-bottom: 0.9rem; text-transform: uppercase; }
+        .project-name { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+        .project-result { font-size: 0.75rem; color: var(--neon); font-weight: 600; margin-bottom: 0.5rem; font-family: 'Space Mono', monospace; }
+        .project-desc { font-size: 0.79rem; color: var(--text); line-height: 1.65; margin-bottom: 1rem; }
+        .project-stack { display: flex; flex-wrap: wrap; gap: 0.3rem; }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.4rem; max-width: 1100px;
-        }
-        .project-card {
-            background: #07070f;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px; padding: 2rem;
-            transition: all 0.3s;
-        }
-        .project-card:hover { border-color: rgba(165,180,252,0.25); transform: translateY(-3px); }
-        .project-badge {
-            display: inline-block; padding: 3px 10px;
-            background: rgba(165,180,252,0.08);
-            border: 1px solid rgba(165,180,252,0.18);
-            border-radius: 3px; font-size: 0.62rem; color: #a5b4fc;
-            font-family: 'Space Mono', monospace; letter-spacing: 0.08em;
-            margin-bottom: 1rem;
-        }
-        .project-name { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
-        .project-result {
-            font-size: 0.82rem; color: #68d391; font-weight: 600;
-            margin-bottom: 0.6rem;
-        }
-        .project-desc { font-size: 0.84rem; color: #64748b; line-height: 1.7; margin-bottom: 1.3rem; }
-        .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        /* INVESTIGACIÓN */
+        #investigacion { background: var(--bg3); }
+        .research-card { max-width: 900px; background: rgba(165,180,252,0.03); border: 1px solid rgba(165,180,252,0.12); border-left: 3px solid var(--accent); padding: 2.2rem 2.5rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+        .research-label { font-family: 'Space Mono', monospace; font-size: 0.58rem; color: var(--accent); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .research-title { font-size: 1.12rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.3; }
+        .research-desc { font-size: 0.82rem; color: var(--text); line-height: 1.65; }
+        .research-cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 9px 20px; border-radius: 50px; border: 1px solid rgba(165,180,252,0.25); color: var(--accent); text-decoration: none; font-size: 0.78rem; font-weight: 600; white-space: nowrap; transition: all 0.25s; flex-shrink: 0; }
+        .research-cta:hover { background: rgba(165,180,252,0.1); border-color: var(--accent); }
 
-        /* ---- CONTACTO ---- */
-        #contacto { background: #000; text-align: center; }
-        .contact-inner { max-width: 660px; margin: 0 auto; }
-        .contact-inner .section-sub { margin: 0 auto 2.5rem; }
-        .contact-cta {
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            padding: 17px 44px; border-radius: 50px;
-            background: #a5b4fc; color: #000;
-            font-weight: 700; font-size: 0.95rem;
-            text-decoration: none; transition: all 0.3s;
-        }
-        .contact-cta:hover { background: #fff; box-shadow: 0 0 40px rgba(165,180,252,0.45); transform: scale(1.04); }
-        .contact-links {
-            display: flex; justify-content: center; gap: 1.2rem;
-            margin-top: 1.8rem; flex-wrap: wrap;
-        }
-        .contact-link {
-            display: flex; align-items: center; gap: 0.5rem;
-            padding: 9px 20px; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50px; color: #64748b; text-decoration: none;
-            font-size: 0.83rem; transition: all 0.3s;
-        }
-        .contact-link:hover { border-color: #a5b4fc; color: #a5b4fc; }
+        /* SOBRE MÍ */
+        #sobre-mi { background: var(--bg2); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; max-width: 1050px; margin: 0 auto; }
+        .terminal-box { background: #020208; border: 1px solid rgba(165,180,252,0.12); border-radius: 10px; padding: 1.8rem 1.8rem 2.2rem; font-family: 'Space Mono', monospace; font-size: 0.74rem; line-height: 1.95; }
+        .terminal-bar { display: flex; gap: 6px; margin-bottom: 1.2rem; }
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .td-r{background:#ff5f57}.td-y{background:#febc2e}.td-g{background:#28c840}
+        .t-m{color:#1e293b}.t-g{color:var(--neon)}.t-b{color:var(--accent)}.t-w{color:#e2e8f0}
+        .t-cur { animation: blink 1s step-end infinite; }
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+        .credentials { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.6rem; }
+        .credential-item { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.85rem 1rem; background: rgba(165,180,252,0.03); border: 1px solid rgba(165,180,252,0.08); border-radius: 8px; }
+        .credential-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+        .credential-title { font-size: 0.82rem; font-weight: 600; color: #e2e8f0; margin-bottom: 1px; }
+        .credential-sub { font-size: 0.72rem; color: var(--text); }
 
-        /* FOOTER */
-        footer {
-            position: relative; z-index: 5;
-            padding: 1.8rem 5%;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            display: flex; justify-content: space-between; align-items: center;
-            background: #000;
-        }
-        .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #334155; }
-        .footer-copy span { color: #a5b4fc; }
+        /* CONTENIDO */
+        #contenido { background: var(--bg3); }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; max-width: 900px; background: rgba(165,180,252,0.06); border: 1px solid rgba(165,180,252,0.08); }
+        .content-card { background: var(--bg3); padding: 1.8rem; text-decoration: none; display: flex; flex-direction: column; gap: 0.4rem; transition: background 0.3s; position: relative; overflow: hidden; }
+        .content-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; transform: scaleX(0); transform-origin: left; transition: transform 0.3s; }
+        .content-card.yt::after { background: #ff0000; }
+        .content-card.tt::after { background: rgba(255,255,255,0.4); }
+        .content-card.li::after { background: #0a66c2; }
+        .content-card:hover { background: rgba(165,180,252,0.03); }
+        .content-card:hover::after { transform: scaleX(1); }
+        .content-platform { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+        .platform-icon { width: 30px; height: 30px; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .platform-icon.yt{background:#ff0000} .platform-icon.tt{background:#111;border:1px solid rgba(255,255,255,0.12)} .platform-icon.li{background:#0a66c2}
+        .platform-name { font-size: 0.58rem; color: var(--text); font-family: 'Space Mono', monospace; letter-spacing: 0.15em; text-transform: uppercase; }
+        .content-handle { font-size: 0.95rem; font-weight: 700; color: #fff; }
+        .content-desc { font-size: 0.78rem; color: var(--text); line-height: 1.6; flex: 1; }
+        .content-arrow { font-size: 0.72rem; color: var(--accent); margin-top: 0.4rem; }
+        .content-arrow span { transition: transform 0.2s; display: inline-block; }
+        .content-card:hover .content-arrow span { transform: translateX(4px); }
 
-        /* WHATSAPP FLOTANTE */
-        .wa-float {
-            position: fixed; bottom: 28px; right: 28px;
-            width: 52px; height: 52px; z-index: 9999;
-            background: #25d366;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: floatWA 3.5s ease-in-out infinite;
+        /* CONTACTO */
+        #contacto {
+            position: relative;
+            text-align: center;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
         }
-        @keyframes floatWA {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+        #contacto::before {
+            content: '';
+            position: absolute; inset: 0; z-index: 0;
+            background: rgba(0,0,0,0.1);
         }
-        .wa-float:hover {
-            transform: scale(1.1) translateY(-6px) !important;
-            box-shadow: 0 6px 30px rgba(37,211,102,0.6);
+        #contacto .contact-inner {
+            position: relative; z-index: 1;
+            background: rgba(0,0,10,0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(165,180,252,0.15);
+            border-radius: 16px;
+            padding: 3.5rem 3rem;
+            max-width: 560px;
+            margin: 0 auto;
         }
-        .wa-float svg { width: 28px; height: 28px; }
+        .scene-label {
+            position: absolute; bottom: 1rem; right: 1.5rem; z-index: 2;
+            font-family: 'Space Mono', monospace; font-size: 0.52rem;
+            color: rgba(255,255,255,0.35); letter-spacing: 0.2em; text-transform: uppercase;
+            pointer-events: none;
+        }
+        .contact-inner .section-sub { margin: 0 auto 2rem; }
+        .contact-cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 14px 38px; border-radius: 50px; background: var(--blue); color: #fff; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.25s; box-shadow: 0 0 24px rgba(37,99,235,0.3); }
+        .contact-cta:hover { background: var(--blue2); box-shadow: 0 0 32px rgba(59,130,246,0.5); transform: scale(1.03); }
+        .contact-links { display: flex; justify-content: center; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .contact-link { display: flex; align-items: center; gap: 0.4rem; padding: 7px 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 50px; color: var(--text); text-decoration: none; font-size: 0.78rem; transition: all 0.25s; }
+        .contact-link:hover { border-color: var(--accent); color: var(--accent); }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .interactive-link { display: none; }
-            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-            .process-track { grid-template-columns: 1fr 1fr; }
-            .process-track::before { display: none; }
-            .trust-bar { gap: 1.5rem; }
-            footer { flex-direction: column; gap: 0.6rem; text-align: center; }
+        footer { position: relative; z-index: 5; padding: 1.4rem 5%; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+        .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); }
+        .footer-copy span { color: var(--accent); }
+
+        .wa-float { position: fixed; bottom: 26px; right: 26px; width: 50px; height: 50px; z-index: 9999; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(37,211,102,0.35); animation: floatWA 3.5s ease-in-out infinite; transition: transform 0.3s, box-shadow 0.3s; }
+        @keyframes floatWA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+        .wa-float:hover { transform:scale(1.1) translateY(-5px)!important; box-shadow:0 6px 24px rgba(37,211,102,0.55); }
+        .wa-float svg { width: 26px; height: 26px; }
+
+        @media(max-width:768px){
+            h1{font-size:2rem} .nav-link{display:none}
+            .about-grid{grid-template-columns:1fr;gap:2rem}
+            .process-track{grid-template-columns:1fr 1fr} .process-track::before{display:none}
+            .trust-bar{gap:1.2rem} .research-card{grid-template-columns:1fr;padding:1.6rem}
+            footer{flex-direction:column;gap:0.5rem;text-align:center}
         }
     </style>
 </head>
 <body>
-
 <div class="warp-flash" id="warpFlash"></div>
 <canvas id="cosmos"></canvas>
 
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 <div class="ui-layer">
     <nav>
         <div class="logo">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:52px;height:52px;">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:46px;height:46px;">
                 <g stroke="white" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M 28 15 L 60 44"/><path d="M 92 21 L 60 44"/>
                     <path d="M 28 15 L 28 39 L 39 49"/><path d="M 28 68 L 60 96"/>
@@ -506,21 +320,18 @@
             Gianmarco Bendezu
         </div>
         <div>
-            <a href="#servicios" class="interactive-link">Servicios</a>
-            <a href="#precios" class="interactive-link">Precios</a>
-            <a href="#sobre-mi" class="interactive-link">Sobre mí</a>
-            <a href="#contacto" class="interactive-link">Contacto</a>
+            <a href="#servicios" class="nav-link">Servicios</a>
+            <a href="#precios" class="nav-link">Precios</a>
+            <a href="#portfolio" class="nav-link">Proyectos</a>
+            <a href="#contenido" class="nav-link">Contenido</a>
+            <a href="#contacto" class="nav-link">Contacto</a>
         </div>
     </nav>
-
     <div class="hero-content">
-        <div class="hero-status">
-            <div class="hero-status-dot"></div>
-            Disponible para proyectos
-        </div>
+        <div class="hero-status"><div class="hero-status-dot"></div>Sistek Peru · Disponible para proyectos</div>
         <h1>Convierte horas perdidas<br>en ventaja competitiva.</h1>
         <div class="hero-ctas">
-            <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20automatizar%20un%20proceso%20de%20mi%20empresa" class="btn btn-primary" target="_blank">Hablar por WhatsApp</a>
+            <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20automatizar%20mi%20empresa" class="btn btn-primary" target="_blank">Hablar por WhatsApp</a>
             <a href="#servicios" id="turboBtn" class="btn">Ver servicios</a>
         </div>
     </div>
@@ -528,435 +339,302 @@
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
-    <div class="trust-item"><span>⚡</span> Respuesta en menos de 24h</div>
-    <div class="trust-item"><span>🔒</span> Tus datos siempre seguros</div>
-    <div class="trust-item"><span>🎓</span> Ing. de Sistemas certificado</div>
-    <div class="trust-item"><span>🛠️</span> Soporte incluido post-entrega</div>
-    <div class="trust-item"><span>📍</span> Trabajo remoto para toda Latinoamérica</div>
+    <div class="trust-item"><span>⚡</span> Respuesta en 24h</div>
+    <div class="trust-item"><span>🔒</span> Datos seguros</div>
+    <div class="trust-item"><span>🎓</span> Ing. de Sistemas</div>
+    <div class="trust-item"><span>🛠️</span> Soporte post-entrega</div>
+    <div class="trust-item"><span>📍</span> Ica, Perú · Latam remoto</div>
 </div>
+<div class="led-strip"></div>
 
-<!-- ===== ¿TE IDENTIFICAS? ===== -->
+<!-- PROBLEMAS -->
 <section id="problemas" class="section-base">
     <div class="reveal">
-        <div class="section-label">// ¿te suena familiar?</div>
-        <h2 class="section-title">Si tu equipo hace esto<br>a mano, <em>puedo ayudarte</em></h2>
-        <p class="section-sub">No necesitas saber de tecnología para entender el valor. Solo identifica si alguna de estas situaciones ocurre en tu empresa.</p>
+        <div class="section-label">// ¿te suena?</div>
+        <h2 class="section-title">Situaciones que<br>puedo <em>resolver</em></h2>
+        <p class="section-sub">Si alguna de estas ocurre en tu empresa, tengo la solución.</p>
     </div>
     <div class="problems-grid reveal">
-        <div class="problem-card">
-            <span class="problem-emoji">📊</span>
-            <div class="problem-q">"Paso horas copiando datos de un sistema a otro o armando reportes en Excel."</div>
-            <div class="problem-a">Eso lo <strong>automatizo en minutos</strong>. El reporte llega solo a tu correo cada vez que lo necesitas.</div>
-        </div>
-        <div class="problem-card">
-            <span class="problem-emoji">📱</span>
-            <div class="problem-q">"Mis clientes escriben por WhatsApp y no siempre podemos responder rápido."</div>
-            <div class="problem-a">Un <strong>asistente con IA</strong> responde al instante, filtra consultas y solo te pasa los casos que requieren atención humana.</div>
-        </div>
-        <div class="problem-card">
-            <span class="problem-emoji">🏨</span>
-            <div class="problem-q">"En mi agencia de turismo gestionamos reservas, pagos y confirmaciones manualmente."</div>
-            <div class="problem-a">Diseño un flujo que <strong>confirma reservas, envía vouchers y cobra automáticamente</strong> sin que nadie intervenga.</div>
-        </div>
-        <div class="problem-card">
-            <span class="problem-emoji">🧾</span>
-            <div class="problem-q">"El área de contabilidad ingresa facturas a mano y siempre hay errores."</div>
-            <div class="problem-a">Extraigo los datos de las facturas automáticamente y los <strong>registro en tu sistema sin errores humanos</strong>.</div>
-        </div>
-        <div class="problem-card">
-            <span class="problem-emoji">📦</span>
-            <div class="problem-q">"Cuando hay un pedido nuevo, alguien tiene que avisar a almacén, al cliente y al transportista."</div>
-            <div class="problem-a">Todo eso pasa <strong>solo y al instante</strong>. Cero llamadas internas, cero olvidos.</div>
-        </div>
-        <div class="problem-card">
-            <span class="problem-emoji">📈</span>
-            <div class="problem-q">"Como CEO no tengo visibilidad en tiempo real de cómo va el negocio."</div>
-            <div class="problem-a">Construyo un <strong>dashboard actualizado automáticamente</strong> con los indicadores que más te importan.</div>
-        </div>
+        <div class="problem-card"><span class="problem-emoji">📊</span><div class="problem-q">"Paso horas armando reportes en Excel."</div><div class="problem-a">El reporte llega <strong>solo a tu correo</strong>, cuando lo necesitas.</div></div>
+        <div class="problem-card"><span class="problem-emoji">📱</span><div class="problem-q">"No siempre respondemos a tiempo por WhatsApp."</div><div class="problem-a">Un asistente con IA <strong>responde al instante</strong> y filtra lo urgente.</div></div>
+        <div class="problem-card"><span class="problem-emoji">🏨</span><div class="problem-q">"Gestionamos reservas y pagos a mano."</div><div class="problem-a">Confirma, envía vouchers y cobra <strong>sin intervención humana</strong>.</div></div>
+        <div class="problem-card"><span class="problem-emoji">🧾</span><div class="problem-q">"Contabilidad ingresa facturas a mano y hay errores."</div><div class="problem-a">Extraigo y registro los datos <strong>automáticamente, sin errores</strong>.</div></div>
+        <div class="problem-card"><span class="problem-emoji">📦</span><div class="problem-q">"Cada pedido requiere avisar a varios departamentos."</div><div class="problem-a">Todo se notifica <strong>solo y al instante</strong>. Cero llamadas internas.</div></div>
+        <div class="problem-card"><span class="problem-emoji">📈</span><div class="problem-q">"No tengo visibilidad en tiempo real del negocio."</div><div class="problem-a">Dashboard con <strong>tus métricas clave</strong>, actualizado automáticamente.</div></div>
     </div>
 </section>
 
-<!-- ===== SERVICIOS ===== -->
+<!-- SERVICIOS -->
 <section id="servicios" class="section-base">
     <div class="reveal">
         <div class="section-label">// 01 — servicios</div>
         <h2 class="section-title">Lo que construyo<br>para tu <em>empresa</em></h2>
-        <p class="section-sub">Cada solución se adapta a tu negocio. No vendo productos genéricos — analizo tu proceso y te entrego exactamente lo que necesitas.</p>
+        <p class="section-sub">Soluciones a medida. Analizo tu proceso y entrego exactamente lo que necesitas.</p>
     </div>
     <div class="services-grid reveal">
-        <div class="service-card">
-            <div class="service-icon">🤖</div>
-            <div class="service-name">Asistente virtual por WhatsApp o web</div>
-            <div class="service-benefit">→ Atiende clientes sin que tu equipo esté disponible</div>
-            <div class="service-desc">Un bot inteligente que responde preguntas, agenda citas, toma pedidos y filtra consultas. Disponible todos los días, a cualquier hora. Perfecto para hoteles, restaurantes, clínicas y tiendas.</div>
-            <div class="service-tags"><span class="tag">WhatsApp</span><span class="tag">Chatbot IA</span><span class="tag">Atención 24/7</span></div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">⚡</div>
-            <div class="service-name">Automatización de procesos internos</div>
-            <div class="service-benefit">→ Elimina las tareas repetitivas de tu equipo</div>
-            <div class="service-desc">Conecto tus herramientas (correo, Excel, WhatsApp, sistemas de gestión) para que los datos fluyan solos. Sin copiar y pegar, sin errores, sin retrasos. Aplica a contabilidad, RRHH, ventas y logística.</div>
-            <div class="service-tags"><span class="tag">Flujos automáticos</span><span class="tag">Integración de sistemas</span></div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">🧠</div>
-            <div class="service-name">Asistente IA con tu información</div>
-            <div class="service-benefit">→ Tu empresa con un experto disponible siempre</div>
-            <div class="service-desc">Entreno una IA con tus documentos, catálogos, manuales o base de datos. El sistema responde preguntas internas del equipo o de tus clientes usando solo tu información real.</div>
-            <div class="service-tags"><span class="tag">IA personalizada</span><span class="tag">Base de conocimiento</span></div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">📊</div>
-            <div class="service-name">Reportes y dashboards automáticos</div>
-            <div class="service-benefit">→ Decisiones basadas en datos, sin trabajo extra</div>
-            <div class="service-desc">Diseño paneles que se actualizan solos con los datos de tu negocio. Ventas, inventario, reservas, flujo de caja — todo en un solo lugar, en tiempo real, sin que nadie lo arme manualmente.</div>
-            <div class="service-tags"><span class="tag">Dashboard</span><span class="tag">Reportes automáticos</span></div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">🔗</div>
-            <div class="service-name">Integración entre sistemas y apps</div>
-            <div class="service-benefit">→ Tus herramientas hablando entre sí</div>
-            <div class="service-desc">¿Usas varios programas que no se conectan? Los uno. Desde tu sistema de facturación hasta tu tienda online, redes sociales o plataforma de reservas — todo sincronizado automáticamente.</div>
-            <div class="service-tags"><span class="tag">Conectividad total</span><span class="tag">Sin duplicar trabajo</span></div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">🕷️</div>
-            <div class="service-name">Extracción automática de información</div>
-            <div class="service-benefit">→ Datos listos para usar, sin digitación manual</div>
-            <div class="service-desc">Capturo información de facturas, correos, formularios o páginas web y la proceso automáticamente. Ideal para áreas de compras, contabilidad o marketing que manejan grandes volúmenes de datos.</div>
-            <div class="service-tags"><span class="tag">Extracción de datos</span><span class="tag">Sin errores humanos</span></div>
-        </div>
+        <div class="service-card"><div class="led-dot" style="animation-duration:1.8s"></div><div class="service-icon">🤖</div><div class="service-name">Asistente virtual por WhatsApp o web</div><div class="service-benefit">→ Atiende clientes sin que tu equipo esté disponible</div><div class="service-desc">Bot con IA que responde, agenda y filtra consultas. 24/7. Ideal para hoteles, clínicas y tiendas.</div><div class="service-tags"><span class="tag">WhatsApp</span><span class="tag">Chatbot IA</span><span class="tag">24/7</span></div></div>
+        <div class="service-card"><div class="led-dot green" style="animation-duration:2.3s"></div><div class="service-icon">⚡</div><div class="service-name">Automatización de procesos</div><div class="service-benefit">→ Elimina las tareas repetitivas de tu equipo</div><div class="service-desc">Conecto tus herramientas para que los datos fluyan solos. Sin copiar y pegar, sin errores.</div><div class="service-tags"><span class="tag">Flujos automáticos</span><span class="tag">Integración</span></div></div>
+        <div class="service-card"><div class="led-dot violet" style="animation-duration:1.5s"></div><div class="service-icon">🧠</div><div class="service-name">Asistente IA con tu información</div><div class="service-benefit">→ Un experto disponible siempre, en tu empresa</div><div class="service-desc">Entreno una IA con tus documentos y catálogos. Responde usando solo tu información real.</div><div class="service-tags"><span class="tag">IA personalizada</span><span class="tag">Base de conocimiento</span></div></div>
+        <div class="service-card"><div class="led-dot" style="animation-duration:2.8s"></div><div class="service-icon">📊</div><div class="service-name">Reportes y dashboards automáticos</div><div class="service-benefit">→ Decisiones basadas en datos, sin trabajo extra</div><div class="service-desc">Paneles que se actualizan solos. Ventas, inventario, flujo de caja — en tiempo real.</div><div class="service-tags"><span class="tag">Dashboard</span><span class="tag">Tiempo real</span></div></div>
+        <div class="service-card"><div class="led-dot green" style="animation-duration:1.3s"></div><div class="service-icon">🔗</div><div class="service-name">Integración entre sistemas</div><div class="service-benefit">→ Tus herramientas hablando entre sí</div><div class="service-desc">Uno tu facturación, tienda online, CRM y redes sociales. Todo sincronizado automáticamente.</div><div class="service-tags"><span class="tag">Conectividad</span><span class="tag">Sin duplicar trabajo</span></div></div>
+        <div class="service-card"><div class="led-dot violet" style="animation-duration:2.1s"></div><div class="service-icon">🕷️</div><div class="service-name">Extracción automática de datos</div><div class="service-benefit">→ Información lista, sin digitación manual</div><div class="service-desc">Capturo datos de facturas, correos y formularios. Ideal para contabilidad, compras y marketing.</div><div class="service-tags"><span class="tag">Extracción</span><span class="tag">Sin errores</span></div></div>
     </div>
 </section>
+<div class="led-strip"></div>
 
-<!-- ===== PROCESO ===== -->
+<!-- PROCESO -->
 <section id="proceso" class="section-base">
     <div class="reveal">
-        <div class="section-label">// 02 — cómo trabajamos juntos</div>
-        <h2 class="section-title">Simple y sin<br><em>tecnicismos</em></h2>
-        <p class="section-sub" style="margin:0 auto 0;">No necesitas saber nada de tecnología. Yo me encargo de todo — tú solo describes el problema.</p>
+        <div class="section-label">// 02 — cómo trabajo</div>
+        <h2 class="section-title">Del problema<br>al <em>sistema</em></h2>
+        <p class="section-sub" style="margin:0 auto;">Sin tecnicismos. Solo describe el problema — yo me encargo del resto.</p>
     </div>
     <div class="process-track reveal">
-        <div class="process-step">
-            <div class="step-circle">01</div>
-            <div class="step-name">Me cuentas</div>
-            <div class="step-desc">Describes qué proceso quieres mejorar o qué tarea consume demasiado tiempo.</div>
-        </div>
-        <div class="process-step">
-            <div class="step-circle">02</div>
-            <div class="step-name">Te propongo</div>
-            <div class="step-desc">En 24h te envío una propuesta clara: qué se va a hacer, cómo y cuánto cuesta.</div>
-        </div>
-        <div class="process-step">
-            <div class="step-circle">03</div>
-            <div class="step-name">Lo construyo</div>
-            <div class="step-desc">Desarrollo la solución, te muestro avances y ajusto según tu feedback.</div>
-        </div>
-        <div class="process-step">
-            <div class="step-circle">04</div>
-            <div class="step-name">Lo entrego</div>
-            <div class="step-desc">Lo pongo en marcha, te explico cómo funciona y te dejo con soporte activo.</div>
-        </div>
+        <div class="process-step"><div class="step-circle">01</div><div class="step-name">Me cuentas</div><div class="step-desc">Describes qué tarea consume demasiado tiempo.</div></div>
+        <div class="process-step"><div class="step-circle">02</div><div class="step-name">Te propongo</div><div class="step-desc">En 24h recibes una propuesta clara con precio.</div></div>
+        <div class="process-step"><div class="step-circle">03</div><div class="step-name">Lo construyo</div><div class="step-desc">Desarrollo y ajusto con tu feedback en cada paso.</div></div>
+        <div class="process-step"><div class="step-circle">04</div><div class="step-name">Lo entrego</div><div class="step-desc">En marcha, funcionando, con soporte incluido.</div></div>
     </div>
 </section>
 
-<!-- ===== PRECIOS ===== -->
+<!-- PRECIOS -->
 <section id="precios" class="section-base">
     <div class="reveal">
         <div class="section-label">// 03 — inversión</div>
         <h2 class="section-title">Precios claros,<br>sin <em>sorpresas</em></h2>
-        <p class="section-sub">Cada proyecto es distinto, pero estos rangos te dan una idea realista de la inversión. Consulta gratis y sin compromiso.</p>
-        <div class="pricing-note">💡 Todos los precios están en USD. Pago en soles disponible.</div>
+        <p class="section-sub">Rangos reales. Consulta sin costo ni compromiso.</p>
+        <div class="pricing-note">💡 Precios en USD · Pago en soles disponible</div>
     </div>
     <div class="pricing-grid reveal">
         <div class="price-card">
-            <div class="price-tier">Starter</div>
-            <div class="price-name">Automatización básica</div>
-            <div class="price-desc">Para empresas que quieren dar su primer paso con automatización: un proceso, bien hecho.</div>
-            <div class="price-amount">
-                <div class="price-from">Desde</div>
-                <div class="price-num">$300 <span>USD</span></div>
-                <div class="price-note">Entrega en 5–10 días hábiles</div>
-            </div>
-            <ul class="price-features">
-                <li>1 flujo o proceso automatizado</li>
-                <li>Integración con hasta 2 herramientas</li>
-                <li>Pruebas y ajustes incluidos</li>
-                <li>Documentación de uso básica</li>
-                <li>Soporte por 15 días post-entrega</li>
-            </ul>
-            <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20me%20interesa%20el%20plan%20Starter" class="price-cta" target="_blank">Consultar disponibilidad</a>
+            <div class="price-tier">Starter</div><div class="price-name">Primer paso</div>
+            <div class="price-desc">Un proceso automatizado, bien hecho.</div>
+            <div class="price-amount"><div class="price-from">Desde</div><div class="price-num">$300 <span>USD</span></div><div class="price-note">Entrega en 5–10 días hábiles</div></div>
+            <ul class="price-features"><li>1 flujo automatizado</li><li>Integración con 2 herramientas</li><li>Pruebas y ajustes incluidos</li><li>Soporte 15 días</li></ul>
+            <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20me%20interesa%20el%20plan%20Starter" class="price-cta" target="_blank">Consultar</a>
         </div>
         <div class="price-card featured">
             <div class="featured-badge">⭐ Más contratado</div>
-            <div class="price-tier">Business</div>
-            <div class="price-name">Sistema completo</div>
-            <div class="price-desc">Para empresas que quieren automatizar varios procesos o construir un sistema más robusto.</div>
-            <div class="price-amount">
-                <div class="price-from">Desde</div>
-                <div class="price-num">$700 <span>USD</span></div>
-                <div class="price-note">Entrega en 2–4 semanas</div>
-            </div>
-            <ul class="price-features">
-                <li>Hasta 4 flujos o procesos automatizados</li>
-                <li>Bot de WhatsApp o asistente IA incluido</li>
-                <li>Integración con múltiples herramientas</li>
-                <li>Dashboard o reportes automáticos</li>
-                <li>Capacitación a tu equipo</li>
-                <li>Soporte por 30 días post-entrega</li>
-            </ul>
+            <div class="price-tier">Business</div><div class="price-name">Sistema completo</div>
+            <div class="price-desc">Varios procesos automatizados en un solo proyecto.</div>
+            <div class="price-amount"><div class="price-from">Desde</div><div class="price-num">$700 <span>USD</span></div><div class="price-note">Entrega en 2–4 semanas</div></div>
+            <ul class="price-features"><li>Hasta 4 flujos automatizados</li><li>Bot WhatsApp o asistente IA</li><li>Dashboard o reportes</li><li>Capacitación al equipo</li><li>Soporte 30 días</li></ul>
             <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20me%20interesa%20el%20plan%20Business" class="price-cta" target="_blank">Quiero este plan</a>
         </div>
         <div class="price-card">
-            <div class="price-tier">Enterprise</div>
-            <div class="price-name">Transformación digital</div>
-            <div class="price-desc">Para empresas que necesitan una solución integral, a medida y con acompañamiento continuo.</div>
-            <div class="price-amount">
-                <div class="price-from">Desde</div>
-                <div class="price-num">$1,500 <span>USD</span></div>
-                <div class="price-note">Plazo según alcance del proyecto</div>
-            </div>
-            <ul class="price-features">
-                <li>Análisis completo de procesos</li>
-                <li>Sistema de automatización a medida</li>
-                <li>IA entrenada con tu información</li>
-                <li>Integraciones sin límite</li>
-                <li>Mantenimiento y soporte mensual</li>
-                <li>Reuniones de seguimiento incluidas</li>
-            </ul>
-            <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20hablar%20sobre%20un%20proyecto%20Enterprise" class="price-cta" target="_blank">Agendar reunión</a>
+            <div class="price-tier">Enterprise</div><div class="price-name">Transformación digital</div>
+            <div class="price-desc">Solución integral con acompañamiento continuo.</div>
+            <div class="price-amount"><div class="price-from">Desde</div><div class="price-num">$1,500 <span>USD</span></div><div class="price-note">Plazo según proyecto</div></div>
+            <ul class="price-features"><li>Análisis completo de procesos</li><li>IA entrenada con tu información</li><li>Integraciones sin límite</li><li>Soporte mensual continuo</li></ul>
+            <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20hablar%20de%20un%20proyecto%20Enterprise" class="price-cta" target="_blank">Agendar reunión</a>
         </div>
     </div>
 </section>
+<div class="led-strip"></div>
 
-<!-- ===== PORTFOLIO ===== -->
+<!-- PORTFOLIO -->
 <section id="portfolio" class="section-base">
-    <div class="reveal" style="text-align:center;margin-bottom:3.5rem;">
-        <div class="section-label">// 04 — casos reales</div>
-        <h2 class="section-title">Problemas reales,<br><em>resultados</em> concretos</h2>
+    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
+        <div class="section-label">// 04 — proyectos reales</div>
+        <h2 class="section-title">Integraciones que<br>ya están <em>funcionando</em></h2>
     </div>
     <div class="projects-grid">
-        <div class="project-card reveal">
-            <span class="project-badge">Agencia de Turismo</span>
-            <div class="project-name">Sistema de reservas y confirmaciones automáticas</div>
-            <div class="project-result">↓ 80% menos tiempo en gestión de reservas</div>
-            <div class="project-desc">Una agencia manejaba reservas por WhatsApp de forma manual. Implementé un bot que recibe solicitudes, verifica disponibilidad, envía cotizaciones y confirma pagos sin intervención humana.</div>
-            <div class="project-stack"><span class="tag">Bot WhatsApp</span><span class="tag">Automatización</span><span class="tag">Gestión de pagos</span></div>
+        <div class="project-card reveal" style="position:relative"><div class="led-dot" style="animation-duration:2.2s"></div><span class="project-badge">Turismo · Bokun</span><div class="project-name">Integración con Bokun</div><div class="project-result">↓ Gestión de tours 100% automatizada</div><div class="project-desc">Conecté Bokun con canales de venta externos para sincronizar disponibilidad, reservas y pagos en tiempo real sin intervención manual.</div><div class="project-stack"><span class="tag">Bokun</span><span class="tag">API</span><span class="tag">Automatización</span></div></div>
+        <div class="project-card reveal reveal-delay" style="position:relative"><div class="led-dot green" style="animation-duration:1.6s"></div><span class="project-badge">ERP · Odoo</span><div class="project-name">Integraciones con Odoo</div><div class="project-result">↓ Datos unificados entre áreas</div><div class="project-desc">Integré Odoo con sistemas externos de ventas, inventario y facturación. Los datos fluyen solos entre departamentos sin reingreso manual.</div><div class="project-stack"><span class="tag">Odoo</span><span class="tag">REST API</span><span class="tag">ERP</span></div></div>
+        <div class="project-card reveal reveal-delay2" style="position:relative"><div class="led-dot violet" style="animation-duration:2.9s"></div><span class="project-badge">CRM · HubSpot</span><div class="project-name">Integración con HubSpot</div><div class="project-result">↓ Pipeline de ventas automatizado</div><div class="project-desc">Automaticé la captura de leads, seguimiento y notificaciones en HubSpot conectado a formularios web y WhatsApp.</div><div class="project-stack"><span class="tag">HubSpot</span><span class="tag">Leads</span><span class="tag">Webhook</span></div></div>
+        <div class="project-card reveal" style="position:relative"><div class="led-dot" style="animation-duration:1.4s"></div><span class="project-badge">Productividad · Notion</span><div class="project-name">Integración con Notion</div><div class="project-result">↓ Base de conocimiento viva y automática</div><div class="project-desc">Sincronicé Notion como hub central de operaciones. Tareas, proyectos y documentos se actualizan solos desde otras plataformas.</div><div class="project-stack"><span class="tag">Notion</span><span class="tag">API</span><span class="tag">Flujos</span></div></div>
+        <div class="project-card reveal reveal-delay" style="position:relative"><div class="led-dot green" style="animation-duration:2.5s"></div><span class="project-badge">Tributario · SUNAT</span><div class="project-name">Integración con SIRE SUNAT</div><div class="project-result">↓ Declaración tributaria sin digitación</div><div class="project-desc">Automaticé extracción y envío de comprobantes electrónicos al SIRE de SUNAT. Cero errores manuales, cumplimiento garantizado.</div><div class="project-stack"><span class="tag">SIRE</span><span class="tag">SUNAT</span><span class="tag">Facturación electrónica</span></div></div>
+        <div class="project-card reveal reveal-delay2" style="position:relative"><div class="led-dot violet" style="animation-duration:1.9s"></div><span class="project-badge">Turismo · Reservas</span><div class="project-name">Sistema de reservas integral</div><div class="project-result">↓ 80% menos tiempo en gestión</div><div class="project-desc">Bot que recibe solicitudes, verifica disponibilidad, envía cotizaciones y confirma pagos automáticamente para agencias de turismo.</div><div class="project-stack"><span class="tag">Bot WhatsApp</span><span class="tag">Pagos</span><span class="tag">Automatización</span></div></div>
+    </div>
+</section>
+<div class="led-strip"></div>
+
+<!-- INVESTIGACIÓN -->
+<section id="investigacion" class="section-base">
+    <div class="reveal">
+        <div class="section-label">// 05 — investigación</div>
+        <h2 class="section-title">Más allá de la<br><em>práctica</em></h2>
+        <p class="section-sub">Investigo y aplico IA a problemas reales de gestión empresarial.</p>
+    </div>
+    <div class="research-card reveal">
+        <div>
+            <div class="research-label">🎓 Tesis · Ing. Sistemas e Informática</div>
+            <div class="research-title">Implementación de un Sistema Integral de Gestión Presupuestal con IA Predictiva</div>
+            <div class="research-desc">Sistema que aplica IA para predecir, optimizar y controlar presupuestos empresariales — reduciendo incertidumbre financiera y mejorando la toma de decisiones estratégicas.</div>
         </div>
-        <div class="project-card reveal reveal-delay">
-            <span class="project-badge">Empresa de Logística</span>
-            <div class="project-name">Alertas y reportes de pedidos en tiempo real</div>
-            <div class="project-result">↓ 0 llamadas internas para coordinar envíos</div>
-            <div class="project-desc">Cada nuevo pedido disparaba un caos de llamadas y mensajes. Automaticé las notificaciones a almacén, transportista y cliente — todo simultáneo y sin errores desde que el pedido entra al sistema.</div>
-            <div class="project-stack"><span class="tag">Notificaciones automáticas</span><span class="tag">Integración ERP</span></div>
-        </div>
-        <div class="project-card reveal reveal-delay2">
-            <span class="project-badge">Estudio Contable</span>
-            <div class="project-name">Extracción automática de facturas</div>
-            <div class="project-result">↓ 5 horas diarias de digitación eliminadas</div>
-            <div class="project-desc">El equipo ingresaba facturas a mano, con errores frecuentes. Construí un sistema que lee las facturas en PDF o correo, extrae los datos clave y los registra en el sistema contable automáticamente.</div>
-            <div class="project-stack"><span class="tag">Extracción de datos</span><span class="tag">IA</span><span class="tag">Contabilidad</span></div>
-        </div>
+        <a href="https://www.linkedin.com/in/alfredo-gianmarco-bendezu-cheglio/" class="research-cta" target="_blank">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Ver en LinkedIn
+        </a>
     </div>
 </section>
 
-<!-- ===== SOBRE MÍ ===== -->
+<!-- SOBRE MÍ -->
 <section id="sobre-mi" class="section-base">
     <div class="about-grid">
         <div class="terminal-box reveal">
-            <div class="terminal-bar">
-                <div class="terminal-dot td-r"></div>
-                <div class="terminal-dot td-y"></div>
-                <div class="terminal-dot td-g"></div>
-            </div>
+            <div class="terminal-bar"><div class="terminal-dot td-r"></div><div class="terminal-dot td-y"></div><div class="terminal-dot td-g"></div></div>
             <div><span class="t-m">$</span> <span class="t-g">python</span> <span class="t-w">gianmarco.py</span></div>
-            <div style="margin-top:0.8rem"><span class="t-b">nombre</span> <span class="t-m">=</span> <span class="t-w">"Gianmarco Bendezu"</span></div>
+            <div style="margin-top:0.7rem"><span class="t-b">nombre</span> <span class="t-m">=</span> <span class="t-w">"Gianmarco Bendezu"</span></div>
+            <div><span class="t-b">empresa</span> <span class="t-m">=</span> <span class="t-w">"Sistek Peru"</span></div>
             <div><span class="t-b">título</span> <span class="t-m">=</span> <span class="t-w">"Ing. Sistemas e Informática"</span></div>
             <div><span class="t-b">técnico</span> <span class="t-m">=</span> <span class="t-w">"Computación e Informática"</span></div>
-            <div><span class="t-b">ubicación</span> <span class="t-m">=</span> <span class="t-w">"Perú 🇵🇪"</span></div>
-            <div style="margin-top:0.8rem"><span class="t-b">especialidad</span> <span class="t-m">=</span> <span class="t-w">"IA & Automatización"</span></div>
-            <div style="margin-top:0.8rem"><span class="t-b">estado</span> <span class="t-m">=</span> <span class="t-g">"disponible"</span> <span class="t-cur t-b">█</span></div>
+            <div><span class="t-b">ubicación</span> <span class="t-m">=</span> <span class="t-w">"Ica, Perú 🇵🇪"</span></div>
+            <div style="margin-top:0.7rem"><span class="t-b">foco</span> <span class="t-m">=</span> <span class="t-w">"IA & Automatización"</span></div>
+            <div style="margin-top:0.7rem"><span class="t-b">estado</span> <span class="t-m">=</span> <span class="t-g">"disponible"</span> <span class="t-cur t-b">█</span></div>
         </div>
-
         <div class="about-text reveal">
-            <div class="section-label">// 05 — quién soy</div>
-            <h2 class="section-title" style="font-size:2.3rem;">El ingeniero que<br>habla tu <em>idioma</em></h2>
-            <p class="section-sub">Soy <strong style="color:#e2e8f0">Gianmarco Bendezú</strong>, Ingeniero de Sistemas e Informática y Técnico en Computación. Llevo años ayudando a empresas a hacer más con menos — sin que tengan que entender una sola línea de código.</p>
-            <p class="section-sub" style="margin-top:-1.5rem;">Mi trabajo es traducir tus problemas operativos en soluciones tecnológicas que cualquier persona de tu equipo pueda usar desde el primer día.</p>
+            <div class="section-label">// 06 — quién soy</div>
+            <h2 class="section-title" style="font-size:2.1rem;">El ingeniero que<br>habla tu <em>idioma</em></h2>
+            <p class="section-sub">Soy <strong style="color:#e2e8f0">Gianmarco Bendezu</strong>, fundador de Sistek Peru. Ingeniero de Sistemas especializado en automatización e IA. Ayudo a empresas a hacer más con menos — sin que tengan que entender una línea de código.</p>
             <div class="credentials">
-                <div class="credential-item">
-                    <div class="credential-icon">🎓</div>
-                    <div>
-                        <div class="credential-title">Ingeniero de Sistemas e Informática</div>
-                        <div class="credential-sub">Formación universitaria en diseño y desarrollo de sistemas</div>
-                    </div>
-                </div>
-                <div class="credential-item">
-                    <div class="credential-icon">💻</div>
-                    <div>
-                        <div class="credential-title">Técnico en Computación e Informática</div>
-                        <div class="credential-sub">Base técnica sólida en hardware, redes y software</div>
-                    </div>
-                </div>
-                <div class="credential-item">
-                    <div class="credential-icon">🤝</div>
-                    <div>
-                        <div class="credential-title">Trabajo remoto para toda Latinoamérica</div>
-                        <div class="credential-sub">Reuniones por videollamada, entregables claros, comunicación directa</div>
-                    </div>
-                </div>
+                <div class="credential-item"><div class="credential-icon">🎓</div><div><div class="credential-title">Ingeniero de Sistemas e Informática</div><div class="credential-sub">Diseño y desarrollo de sistemas</div></div></div>
+                <div class="credential-item"><div class="credential-icon">💻</div><div><div class="credential-title">Técnico en Computación e Informática</div><div class="credential-sub">Base técnica sólida en redes y software</div></div></div>
+                <div class="credential-item"><div class="credential-icon">🏢</div><div><div class="credential-title">Fundador de Sistek Peru</div><div class="credential-sub">Empresa de tecnología e innovación en Ica, Perú</div></div></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== CONTACTO ===== -->
+<!-- CONTENIDO -->
+<section id="contenido" class="section-base">
+    <div class="reveal">
+        <div class="section-label">// 07 — sígueme</div>
+        <h2 class="section-title">Aprende automatización<br>con <em>Sistek Peru</em></h2>
+        <p class="section-sub">Tutoriales, casos reales y tendencias de IA para empresas.</p>
+    </div>
+    <div class="content-grid reveal">
+        <a href="https://www.youtube.com/channel/UCoJ7YjtOzb7FZbHVukzacGg/" class="content-card yt" target="_blank">
+            <div class="content-platform"><div class="platform-icon yt"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div><span class="platform-name">YouTube</span></div>
+            <div class="content-handle">@sistekperu</div>
+            <div class="content-desc">Tutoriales de automatización, integraciones reales y casos de uso con IA.</div>
+            <div class="content-arrow">Ver canal <span>→</span></div>
+        </a>
+        <a href="https://www.tiktok.com/@sistekperu" class="content-card tt" target="_blank">
+            <div class="content-platform"><div class="platform-icon tt"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg></div><span class="platform-name">TikTok</span></div>
+            <div class="content-handle">@sistekperu</div>
+            <div class="content-desc">Videos cortos sobre automatización, bots y herramientas de IA aplicadas.</div>
+            <div class="content-arrow">Ver perfil <span>→</span></div>
+        </a>
+        <a href="https://www.linkedin.com/in/alfredo-gianmarco-bendezu-cheglio/" class="content-card li" target="_blank">
+            <div class="content-platform"><div class="platform-icon li"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div><span class="platform-name">LinkedIn</span></div>
+            <div class="content-handle">Gianmarco Bendezu</div>
+            <div class="content-desc">Casos de estudio, IA predictiva y reflexiones sobre automatización empresarial.</div>
+            <div class="content-arrow">Conectar <span>→</span></div>
+        </a>
+    </div>
+</section>
+
+<!-- CONTACTO -->
 <section id="contacto" class="section-base">
+    <div class="scene-label" id="scene-label"></div>
     <div class="contact-inner reveal">
-        <div class="section-label">// 06 — hablemos</div>
-        <h2 class="section-title">¿Qué tarea de tu<br>empresa quieres <em>eliminar</em>?</h2>
-        <p class="section-sub">Cuéntame el problema — no hace falta que sepas cómo resolverlo. En menos de 24 horas te respondo con una propuesta sin costo.</p>
-        <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20automatizar%20un%20proceso%20de%20mi%20empresa" class="contact-cta" target="_blank">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Escribir por WhatsApp ahora
+        <div class="section-label">// 08 — hablemos</div>
+        <h2 class="section-title">¿Qué quieres<br><em>automatizar</em>?</h2>
+        <p class="section-sub">Cuéntame el problema. En menos de 24h te respondo con una propuesta sin costo.</p>
+        <a href="https://wa.me/+51920006469?text=Hola%20Gianmarco%2C%20quiero%20automatizar%20mi%20empresa" class="contact-cta" target="_blank">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Escribir ahora
         </a>
         <div class="contact-links">
-            <a href="mailto:tuemail@gmail.com" class="contact-link">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                Email
-            </a>
-            <a href="https://www.linkedin.com/in/alfredo-gianmarco-bendezu-cheglio/" class="contact-link" target="_blank">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                LinkedIn
-            </a>
-            <a href="https://github.com/gianmarcobendezu" class="contact-link" target="_blank">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
+            <a href="mailto:gianmarco.bendezu@gmail.com" class="contact-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email</a>
+            <a href="https://www.linkedin.com/in/alfredo-gianmarco-bendezu-cheglio/" class="contact-link" target="_blank"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+            <a href="https://github.com/gianmarcobendezu" class="contact-link" target="_blank"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>GitHub</a>
+            <a href="https://www.youtube.com/channel/UCoJ7YjtOzb7FZbHVukzacGg/" class="contact-link" target="_blank"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>YouTube</a>
         </div>
     </div>
 </section>
 
 <footer>
-    <div class="footer-copy">© 2026 <span>Gianmarco Bendezu</span> — Ing. Sistemas e Informática</div>
-    <div class="footer-copy">Hecho con código en <span>Perú 🇵🇪</span></div>
+    <div class="footer-copy">© 2026 <span>Gianmarco Bendezu</span> · Sistek Peru</div>
+    <div class="footer-copy">Ing. Sistemas · <span>Ica, Perú 🇵🇪</span></div>
 </footer>
 
-<a href="https://wa.me/+51920006469" class="wa-float" target="_blank" rel="noopener noreferrer" title="WhatsApp">
-    <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
+<a href="https://wa.me/+51920006469" class="wa-float" target="_blank" title="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <script>
-    const canvas = document.getElementById('cosmos');
-    const ctx = canvas.getContext('2d');
-    const warpFlash = document.getElementById('warpFlash');
-    let width, height, centerX, centerY;
-
-    function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        centerX = width / 2; centerY = height / 2;
-    }
-    window.addEventListener('resize', resize); resize();
-
-    let parallaxX = 0, parallaxY = 0;
-    window.addEventListener('mousemove', e => {
-        parallaxX = (e.clientX - width/2) * 0.05;
-        parallaxY = (e.clientY - height/2) * 0.05;
+// ── COSMOS HERO ──
+const canvas=document.getElementById('cosmos'),ctx=canvas.getContext('2d'),wf=document.getElementById('warpFlash');
+let W,H,cx,cy;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;cx=W/2;cy=H/2;}
+window.addEventListener('resize',resize);resize();
+let px=0,py=0;
+window.addEventListener('mousemove',e=>{px=(e.clientX-W/2)*0.05;py=(e.clientY-H/2)*0.05;});
+let warp=false,wf2=0;
+window.addEventListener('mousedown',()=>{warp=true;wf.classList.add('active');});
+window.addEventListener('mouseup',()=>{warp=false;setTimeout(()=>wf.classList.remove('active'),300);});
+const dust=Array.from({length:500},()=>({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,size:Math.random()*1.5+0.3,alpha:Math.random()*0.7+0.1,dir:Math.random()>0.5?1:-1}));
+const comets=Array.from({length:6},()=>({x:(Math.random()-.5)*window.innerWidth*2,y:(Math.random()-.5)*window.innerHeight*2,z:Math.random()*window.innerWidth,speed:Math.random()*3+2}));
+function animate(){
+    const tw=warp?1:0;wf2+=(tw-wf2)*0.1;
+    ctx.fillStyle='#000000';ctx.fillRect(0,0,W,H);
+    dust.forEach(s=>{
+        s.alpha+=0.008*s.dir;if(s.alpha>0.8||s.alpha<0.05)s.dir*=-1;
+        ctx.beginPath();ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;
+        if(wf2>0.05){ctx.ellipse(s.x+px,s.y+py,s.size*(1+wf2*15),s.size,0,0,Math.PI*2);}
+        else{ctx.arc(s.x+px,s.y+py,s.size,0,Math.PI*2);}
+        ctx.fill();
     });
-
-    let warpActive = false, warpFactor = 0;
-    window.addEventListener('mousedown', () => { warpActive = true; warpFlash.classList.add('active'); });
-    window.addEventListener('mouseup', () => {
-        warpActive = false;
-        setTimeout(() => warpFlash.classList.remove('active'), 300);
+    comets.forEach(c=>{
+        c.z-=c.speed*(1+wf2*12);if(c.z<1){c.z=W;}
+        const sc=300/c.z,sx=cx+c.x*sc,sy=cy+c.y*sc;
+        const op=Math.min(1,(1-c.z/W));
+        const tz=c.z+(80*(1+wf2*8)),tsc=300/tz,tx=cx+c.x*tsc,ty=cy+c.y*tsc;
+        ctx.beginPath();
+        const g=ctx.createLinearGradient(tx,ty,sx,sy);
+        g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,`rgba(255,255,255,${op})`);
+        ctx.strokeStyle=g;ctx.lineWidth=2+wf2*4;ctx.moveTo(tx,ty);ctx.lineTo(sx,sy);ctx.stroke();
+        ctx.beginPath();ctx.fillStyle=`rgba(255,255,255,${op})`;
+        ctx.shadowBlur=10+wf2*20;ctx.shadowColor='white';
+        ctx.arc(sx,sy,2+wf2*3,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
     });
+    requestAnimationFrame(animate);
+}
+animate();
+document.getElementById('turboBtn').addEventListener('click',e=>{
+    e.preventDefault();warp=true;wf.classList.add('active');
+    setTimeout(()=>{document.getElementById('servicios').scrollIntoView({behavior:'smooth'});
+        setTimeout(()=>{warp=false;wf.classList.remove('active');},600);},900);
+});
+const obs=new IntersectionObserver(entries=>entries.forEach((e,i)=>{
+    if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*55);
+}),{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 
-    const dustStars = Array.from({ length: 500 }, () => ({
-        x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
-        size: Math.random() * 1.5, alpha: Math.random(), dir: Math.random() > 0.5 ? 1 : -1
-    }));
+// ── WALLPAPER ALEATORIO CONTACTO ──
+(function(){
+    const scenes = [
+        {
+            // Tierra desde el espacio — NASA-style, azul profundo
+            url: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1920&q=90&auto=format&fit=crop',
+            name: 'Tierra · Vista orbital'
+        },
+        {
+            // Nebulosa — colores violeta/azul espectaculares
+            url: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1920&q=90&auto=format&fit=crop',
+            name: 'Nebulosa · Cuna estelar'
+        },
+        {
+            // Vía Láctea desde abajo — impresionante arco
+            url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=90&auto=format&fit=crop',
+            name: 'Vía Láctea · Arco galáctico'
+        },
+        {
+            // Espacio profundo — negro absoluto con estrellas densas
+            url: 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=1920&q=90&auto=format&fit=crop',
+            name: 'Espacio profundo · Campo estelar'
+        }
+    ];
 
-    const comets = Array.from({ length: 6 }, () => ({
-        x: (Math.random()-0.5)*width*2, y: (Math.random()-0.5)*height*2,
-        z: Math.random()*width, pz: 0, speed: Math.random()*3+2
-    }));
+    const chosen = Math.floor(Math.random() * scenes.length);
+    const section = document.getElementById('contacto');
+    const label   = document.getElementById('scene-label');
 
-    function animate() {
-        const targetWarp = warpActive ? 1 : 0;
-        warpFactor += (targetWarp - warpFactor) * 0.1;
-        ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, width, height);
-
-        dustStars.forEach(s => {
-            s.alpha += 0.01 * s.dir;
-            if (s.alpha > 1 || s.alpha < 0.2) s.dir *= -1;
-            const stretch = 1 + warpFactor * 15;
-            ctx.beginPath();
-            ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
-            if (warpFactor > 0.1) {
-                ctx.ellipse(s.x + parallaxX, s.y + parallaxY, s.size * stretch, s.size, 0, 0, Math.PI*2);
-            } else {
-                ctx.arc(s.x + parallaxX, s.y + parallaxY, s.size, 0, Math.PI*2);
-            }
-            ctx.fill();
-        });
-
-        comets.forEach(c => {
-            c.pz = c.z;
-            c.z -= c.speed * (1 + warpFactor * 12);
-            if (c.z < 1) { c.z = width; c.pz = width; }
-            const scale = 300 / c.z;
-            const sx = centerX + c.x * scale;
-            const sy = centerY + c.y * scale;
-            const opacity = Math.min(1, (1 - c.z / width));
-            const trailZ = c.z + (80 * (1 + warpFactor * 8));
-            const tScale = 300 / trailZ;
-            const tx = centerX + c.x * tScale;
-            const ty = centerY + c.y * tScale;
-            ctx.beginPath();
-            const grad = ctx.createLinearGradient(tx, ty, sx, sy);
-            grad.addColorStop(0, 'rgba(255,255,255,0)');
-            grad.addColorStop(1, `rgba(255,255,255,${opacity})`);
-            ctx.strokeStyle = grad;
-            ctx.lineWidth = 2 + warpFactor * 4;
-            ctx.moveTo(tx, ty); ctx.lineTo(sx, sy); ctx.stroke();
-            ctx.beginPath();
-            ctx.fillStyle = `rgba(255,255,255,${opacity})`;
-            ctx.shadowBlur = 10 + warpFactor * 20;
-            ctx.shadowColor = 'white';
-            ctx.arc(sx, sy, 2 + warpFactor * 3, 0, Math.PI*2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        });
-
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-    const turboBtn = document.getElementById('turboBtn');
-    const serviciosSection = document.getElementById('servicios');
-    turboBtn.addEventListener('click', e => {
-        e.preventDefault();
-        warpActive = true; warpFlash.classList.add('active');
-        setTimeout(() => {
-            serviciosSection.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => { warpActive = false; warpFlash.classList.remove('active'); }, 600);
-        }, 1000);
-    });
-
-    // SCROLL REVEAL
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach((entry, i) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => entry.target.classList.add('visible'), i * 70);
-            }
-        });
-    }, { threshold: 0.1 });
-    reveals.forEach(r => observer.observe(r));
+    section.style.backgroundImage = `url('${scenes[chosen].url}')`;
+    label.textContent = scenes[chosen].name;
+})();
 </script>
 </body>
 </html>
